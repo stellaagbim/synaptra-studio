@@ -1,0 +1,142 @@
+{
+  "identity": {
+    "name": "E1",
+    "role": "The Anti-AI Designer",
+    "mission": "Create a cinematic, mission-critical operating console that feels like a sovereign system, not a SaaS dashboard.",
+    "principles": [
+      "Fusion over Imitation: Mix Aerospace Cockpits with Financial Terminals.",
+      "Emotion First: The user should feel 'In Command' and 'Safe'.",
+      "Content is King: Data is the hero. No decoration without function.",
+      "Zoom In: Focus on the execution pipeline details.",
+      "Negative Space: Use void-like darkness to frame the data."
+    ]
+  },
+  "design_system": {
+    "theme": "dark",
+    "color_palette": {
+      "description": "Archetype 2: The Performance Pro (Refined). Deep Obsidian Void with Precision Blue highlights and Industrial Amber for active states.",
+      "colors": {
+        "background": {
+          "base": "#050505",
+          "surface": "#0A0A0A",
+          "elevated": "#121212",
+          "overlay": "rgba(5, 5, 5, 0.9)"
+        },
+        "primary": {
+          "default": "#3B82F6",
+          "foreground": "#FFFFFF",
+          "hover": "#2563EB",
+          "active": "#1D4ED8"
+        },
+        "secondary": {
+          "default": "#27272A",
+          "foreground": "#E4E4E7"
+        },
+        "accent": {
+          "default": "#F59E0B",
+          "foreground": "#000000",
+          "description": "Use for 'Processing', 'Running', or 'Caution' states. The 'Industrial' connector."
+        },
+        "status": {
+          "success": "#10B981",
+          "warning": "#F59E0B",
+          "error": "#EF4444",
+          "info": "#3B82F6"
+        },
+        "border": {
+          "subtle": "rgba(255, 255, 255, 0.08)",
+          "default": "rgba(255, 255, 255, 0.12)",
+          "strong": "rgba(255, 255, 255, 0.20)"
+        },
+        "text": {
+          "primary": "#FAFAFA",
+          "secondary": "#A1A1AA",
+          "tertiary": "#52525B",
+          "muted": "#3F3F46"
+        }
+      }
+    },
+    "typography": {
+      "fonts": {
+        "heading": "Inter, sans-serif",
+        "body": "Inter, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "rules": [
+        "Headings (h1-h3): Tracking-tight (-0.02em), Font-weight 500 or 600. No bold.",
+        "Labels/Overlines: Uppercase, Tracking-widest (0.1em), Font-size 10-11px, Font-weight 600, Mono font preferred.",
+        "Data/Numbers: ALWAYS use JetBrains Mono. Tabular nums if possible.",
+        "Body: Inter, relaxed leading (1.6)."
+      ]
+    },
+    "layout": {
+      "grid_system": "Bento Grid (Mode B: High Density)",
+      "spacing": {
+        "base": "4px",
+        "container_padding": "p-6 or p-8",
+        "gap": "gap-4 or gap-6"
+      },
+      "rules": [
+        "Screenfit: Critical dashboards must fit 1080p without scrolling if possible.",
+        "No Overlap: Panels must never overlap. Use strict grid cells.",
+        "Reflow: On mobile, stack vertically but maintain density."
+      ]
+    },
+    "visual_enhancements": {
+      "glassmorphism": {
+        "style": "Premium Technical Glass",
+        "css": "background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08);"
+      },
+      "borders": {
+        "style": "1px solid rgba(255,255,255,0.1)",
+        "active": "1px solid #3B82F6"
+      },
+      "shadows": {
+        "card": "0 4px 24px -4px rgba(0, 0, 0, 0.4)",
+        "glow": "0 0 20px -5px rgba(59, 130, 246, 0.3)"
+      },
+      "animation": {
+        "philosophy": "Meaningful State Changes Only. No idle motion.",
+        "transitions": "transition-all duration-300 ease-out",
+        "topology": "Slow, pulsing flows (2s-4s duration) to indicate active data movement."
+      }
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-white hover:bg-primary/90 rounded-md px-4 py-2 font-medium shadow-[0_0_15px_rgba(59,130,246,0.3)]",
+      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md px-4 py-2 font-medium border border-border",
+      "ghost": "hover:bg-white/5 text-secondary-foreground hover:text-primary"
+    },
+    "cards": {
+      "base": "bg-card/50 border border-border rounded-xl backdrop-blur-sm",
+      "interactive": "hover:border-primary/50 transition-colors duration-300"
+    },
+    "inputs": {
+      "base": "bg-black/20 border border-border focus:border-primary rounded-md px-3 py-2 font-mono text-sm"
+    },
+    "topology_graph": {
+      "library": "React Flow",
+      "style": "Custom dark theme. Nodes: Minimal rectangles with status dots. Edges: Animated SVG paths (Bezier).",
+      "interaction": "Zoomable, pannable, clickable nodes for drill-down."
+    }
+  },
+  "libraries": {
+    "charts": "Recharts (customized for dark mode, no grid lines, minimal axes)",
+    "topology": "React Flow (preferred) or React Force Graph",
+    "icons": "Lucide React (Stroke width 1.5px for elegance)",
+    "motion": "Framer Motion (AnimatePresence for page transitions, layout prop for grid reflow)",
+    "toast": "Sonner (Dark mode default)"
+  },
+  "universal_guidelines": [
+    "DO NOT use gradients for backgrounds. Use solid deep colors or subtle noise.",
+    "DO NOT use 'Inter' for numbers. Use 'JetBrains Mono'.",
+    "DO NOT center text in dashboards. Left align for readability.",
+    "ALWAYS add 'data-testid' to interactive elements.",
+    "ALWAYS use 'sonner' for notifications.",
+    "Ensure all text has at least 4.5:1 contrast ratio.",
+    "Use 'gap-4' minimum for layouts to prevent clutter.",
+    "Images/Icons must not be playful. No emojis."
+  ],
+  "instructions_to_main_agent": "You are building a serious, mission-critical console. Ignore standard SaaS trends. Think 'SpaceX Control Room' or 'Bloomberg Terminal'. Implement the 'Task Runner' with a 3-column layout: Input (Left), Topology/Pipeline (Center), Output/Logs (Right). Use the 'Electric Amber' accent sparingly for 'Running' states to create a sense of active machinery."
+}
