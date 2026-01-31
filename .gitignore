@@ -1,0 +1,13 @@
+# Security: Ignore all keys and secrets
+.env
+backend/.env
+__pycache__/
+
+# Dependencies: Ignore heavy library folders
+venv/
+node_modules/
+.pytest_cache/
+
+# System
+.DS_Store
+Thumbs.db
