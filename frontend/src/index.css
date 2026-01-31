@@ -1,0 +1,931 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   SYNAPTRA STUDIO - MISSION CRITICAL CONSOLE
+   Deep Obsidian Void Theme with Precision Blue
+   ============================================ */
+
+@layer base {
+    :root {
+        /* Shadcn Base - Dark Obsidian */
+        --background: 0 0% 2%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 4%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 4%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 217 91% 60%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 240 4% 16%;
+        --secondary-foreground: 240 5% 90%;
+        --muted: 240 4% 16%;
+        --muted-foreground: 240 5% 65%;
+        --accent: 38 92% 50%;
+        --accent-foreground: 0 0% 0%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 4% 16%;
+        --input: 240 4% 16%;
+        --ring: 217 91% 60%;
+        --radius: 0.625rem;
+
+        /* Synaptra Core - Deep Obsidian Void */
+        --sy-void: #030303;
+        --sy-obsidian: #050505;
+        --sy-surface: #0a0a0a;
+        --sy-elevated: #0f0f0f;
+        --sy-raised: #141414;
+        
+        /* Borders - Subtle definition */
+        --sy-border-void: rgba(255, 255, 255, 0.04);
+        --sy-border-subtle: rgba(255, 255, 255, 0.06);
+        --sy-border-default: rgba(255, 255, 255, 0.08);
+        --sy-border-strong: rgba(255, 255, 255, 0.12);
+        --sy-border-active: rgba(59, 130, 246, 0.5);
+        
+        /* Glass - Premium Technical */
+        --sy-glass-bg: rgba(10, 10, 10, 0.7);
+        --sy-glass-border: rgba(255, 255, 255, 0.06);
+        --sy-glass-blur: 16px;
+        
+        /* Primary - Precision Blue */
+        --sy-primary: #3b82f6;
+        --sy-primary-dim: #2563eb;
+        --sy-primary-glow: rgba(59, 130, 246, 0.15);
+        --sy-primary-subtle: rgba(59, 130, 246, 0.08);
+        
+        /* Accent - Industrial Amber (Active/Running states) */
+        --sy-amber: #f59e0b;
+        --sy-amber-glow: rgba(245, 158, 11, 0.15);
+        --sy-amber-subtle: rgba(245, 158, 11, 0.08);
+        
+        /* Status Colors */
+        --sy-success: #10b981;
+        --sy-success-glow: rgba(16, 185, 129, 0.15);
+        --sy-warning: #f59e0b;
+        --sy-error: #ef4444;
+        --sy-error-glow: rgba(239, 68, 68, 0.15);
+        --sy-info: #3b82f6;
+        
+        /* Text Hierarchy */
+        --sy-text-primary: #fafafa;
+        --sy-text-secondary: #a1a1aa;
+        --sy-text-tertiary: #71717a;
+        --sy-text-muted: #52525b;
+        --sy-text-void: #3f3f46;
+        
+        /* Shadows - Cinematic depth */
+        --sy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+        --sy-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
+        --sy-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
+        --sy-shadow-glow: 0 0 30px -8px var(--sy-primary);
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    
+    html, body, #root {
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    body {
+        background: var(--sy-void);
+        color: var(--sy-text-primary);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        letter-spacing: -0.01em;
+    }
+    
+    /* Selection */
+    ::selection {
+        background: var(--sy-primary);
+        color: white;
+    }
+}
+
+@layer components {
+    /* =====================================
+       TYPOGRAPHY SYSTEM
+       ===================================== */
+    .sy-display {
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        color: var(--sy-text-primary);
+    }
+    
+    .sy-heading {
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        color: var(--sy-text-primary);
+    }
+    
+    .sy-subheading {
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        line-height: 1.4;
+        color: var(--sy-text-secondary);
+    }
+    
+    .sy-body {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        line-height: 1.6;
+        color: var(--sy-text-secondary);
+    }
+    
+    .sy-mono {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 400;
+        letter-spacing: 0;
+        font-feature-settings: 'tnum' on, 'lnum' on;
+    }
+    
+    .sy-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--sy-text-tertiary);
+    }
+    
+    .sy-data {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        letter-spacing: 0;
+        font-feature-settings: 'tnum' on;
+    }
+
+    /* =====================================
+       PANEL SYSTEM - Premium Technical Glass
+       ===================================== */
+    .sy-panel {
+        background: var(--sy-glass-bg);
+        backdrop-filter: blur(var(--sy-glass-blur));
+        -webkit-backdrop-filter: blur(var(--sy-glass-blur));
+        border: 1px solid var(--sy-glass-border);
+        border-radius: 12px;
+    }
+    
+    .sy-panel-solid {
+        background: var(--sy-surface);
+        border: 1px solid var(--sy-border-subtle);
+        border-radius: 12px;
+    }
+    
+    .sy-panel-elevated {
+        background: var(--sy-elevated);
+        border: 1px solid var(--sy-border-default);
+        border-radius: 12px;
+        box-shadow: var(--sy-shadow-md);
+    }
+    
+    .sy-panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--sy-border-void);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .sy-panel-body {
+        padding: 20px;
+    }
+    
+    .sy-panel-body-flush {
+        padding: 0;
+    }
+
+    /* =====================================
+       SIDEBAR - Mission Control Navigation
+       ===================================== */
+    .sy-sidebar {
+        width: 220px;
+        background: var(--sy-obsidian);
+        border-right: 1px solid var(--sy-border-void);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+    
+    .sy-sidebar-brand {
+        padding: 24px 20px 20px;
+        border-bottom: 1px solid var(--sy-border-void);
+    }
+    
+    .sy-sidebar-nav {
+        flex: 1;
+        padding: 16px 10px;
+        overflow-y: auto;
+    }
+    
+    .sy-nav-section {
+        margin-bottom: 24px;
+    }
+    
+    .sy-nav-section-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--sy-text-muted);
+        padding: 0 12px;
+        margin-bottom: 8px;
+    }
+    
+    .sy-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 450;
+        color: var(--sy-text-tertiary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 2px;
+        border: 1px solid transparent;
+    }
+    
+    .sy-nav-item:hover {
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--sy-text-secondary);
+    }
+    
+    .sy-nav-item.active {
+        background: var(--sy-primary-subtle);
+        color: var(--sy-primary);
+        border-color: var(--sy-border-active);
+    }
+    
+    .sy-nav-icon {
+        width: 18px;
+        height: 18px;
+        opacity: 0.6;
+        stroke-width: 1.5;
+    }
+    
+    .sy-nav-item:hover .sy-nav-icon,
+    .sy-nav-item.active .sy-nav-icon {
+        opacity: 1;
+    }
+    
+    .sy-sidebar-status {
+        padding: 16px;
+        border-top: 1px solid var(--sy-border-void);
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* =====================================
+       HEADER - Minimal, Focused
+       ===================================== */
+    .sy-header {
+        height: 56px;
+        padding: 0 24px;
+        border-bottom: 1px solid var(--sy-border-void);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--sy-obsidian);
+        flex-shrink: 0;
+    }
+    
+    .sy-header-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: var(--sy-text-primary);
+    }
+    
+    .sy-header-status {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    
+    .sy-status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--sy-text-tertiary);
+    }
+    
+    .sy-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        animation: sy-pulse 2s ease-in-out infinite;
+    }
+    
+    .sy-status-dot.online {
+        background: var(--sy-success);
+        box-shadow: 0 0 8px var(--sy-success);
+    }
+    
+    .sy-status-dot.processing {
+        background: var(--sy-amber);
+        box-shadow: 0 0 8px var(--sy-amber);
+    }
+    
+    .sy-status-dot.error {
+        background: var(--sy-error);
+        box-shadow: 0 0 8px var(--sy-error);
+    }
+
+    /* =====================================
+       EXECUTION TOPOLOGY - Visual Flow
+       ===================================== */
+    .sy-topology {
+        position: relative;
+        padding: 24px;
+        min-height: 120px;
+    }
+    
+    .sy-topology-node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: var(--sy-elevated);
+        border: 1px solid var(--sy-border-default);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .sy-topology-node.active {
+        border-color: var(--sy-primary);
+        background: var(--sy-primary-subtle);
+        box-shadow: 0 0 20px -4px var(--sy-primary);
+    }
+    
+    .sy-topology-node.running {
+        border-color: var(--sy-amber);
+        background: var(--sy-amber-subtle);
+        box-shadow: 0 0 20px -4px var(--sy-amber);
+    }
+    
+    .sy-topology-node.completed {
+        border-color: var(--sy-success);
+        background: var(--sy-success-glow);
+    }
+    
+    .sy-topology-edge {
+        stroke: var(--sy-border-strong);
+        stroke-width: 2;
+        fill: none;
+        transition: stroke 0.5s ease;
+    }
+    
+    .sy-topology-edge.active {
+        stroke: var(--sy-primary);
+        stroke-dasharray: 8 4;
+        animation: sy-edge-flow 1s linear infinite;
+    }
+
+    /* =====================================
+       EXECUTION PIPELINE - Step by Step
+       ===================================== */
+    .sy-pipeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .sy-pipeline-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+        padding-bottom: 20px;
+    }
+    
+    .sy-pipeline-step:last-child {
+        padding-bottom: 0;
+    }
+    
+    .sy-pipeline-step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 32px;
+        width: 2px;
+        height: calc(100% - 32px);
+        background: var(--sy-border-subtle);
+        transition: background 0.4s ease;
+    }
+    
+    .sy-pipeline-step.completed:not(:last-child)::after {
+        background: linear-gradient(180deg, var(--sy-success) 0%, var(--sy-border-subtle) 100%);
+    }
+    
+    .sy-pipeline-node {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 2px solid var(--sy-border-default);
+        background: var(--sy-surface);
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+    
+    .sy-pipeline-node.pending {
+        border-color: var(--sy-border-default);
+        color: var(--sy-text-muted);
+    }
+    
+    .sy-pipeline-node.running {
+        border-color: var(--sy-amber);
+        background: var(--sy-amber-subtle);
+        color: var(--sy-amber);
+        box-shadow: 0 0 16px -2px var(--sy-amber);
+        animation: sy-pulse 1.5s ease-in-out infinite;
+    }
+    
+    .sy-pipeline-node.completed {
+        border-color: var(--sy-success);
+        background: var(--sy-success-glow);
+        color: var(--sy-success);
+    }
+    
+    .sy-pipeline-node.failed {
+        border-color: var(--sy-error);
+        background: var(--sy-error-glow);
+        color: var(--sy-error);
+    }
+    
+    .sy-pipeline-content {
+        flex: 1;
+        padding-top: 4px;
+    }
+    
+    .sy-pipeline-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--sy-text-primary);
+        margin-bottom: 2px;
+    }
+    
+    .sy-pipeline-title.muted {
+        color: var(--sy-text-tertiary);
+    }
+    
+    .sy-pipeline-detail {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--sy-text-tertiary);
+    }
+    
+    .sy-pipeline-timing {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--sy-text-muted);
+        margin-left: auto;
+        padding-top: 6px;
+    }
+
+    /* =====================================
+       METRICS - Data Visualization
+       ===================================== */
+    .sy-metric-card {
+        padding: 16px;
+        background: var(--sy-surface);
+        border: 1px solid var(--sy-border-subtle);
+        border-radius: 10px;
+    }
+    
+    .sy-metric-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--sy-text-muted);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .sy-metric-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        color: var(--sy-text-primary);
+        line-height: 1;
+    }
+    
+    .sy-metric-value.success { color: var(--sy-success); }
+    .sy-metric-value.warning { color: var(--sy-warning); }
+    .sy-metric-value.error { color: var(--sy-error); }
+    .sy-metric-value.primary { color: var(--sy-primary); }
+    
+    .sy-metric-bar {
+        height: 4px;
+        background: var(--sy-border-void);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 12px;
+    }
+    
+    .sy-metric-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .sy-metric-fill.success { background: var(--sy-success); }
+    .sy-metric-fill.warning { background: var(--sy-warning); }
+    .sy-metric-fill.error { background: var(--sy-error); }
+    .sy-metric-fill.primary { background: var(--sy-primary); }
+
+    /* =====================================
+       BUTTONS - Precise, Confident
+       ===================================== */
+    .sy-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 10px 18px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    
+    .sy-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    
+    .sy-btn-primary {
+        background: var(--sy-primary);
+        color: white;
+        box-shadow: 0 0 20px -6px var(--sy-primary);
+    }
+    
+    .sy-btn-primary:hover:not(:disabled) {
+        background: var(--sy-primary-dim);
+        box-shadow: 0 0 28px -4px var(--sy-primary);
+    }
+    
+    .sy-btn-secondary {
+        background: transparent;
+        color: var(--sy-text-secondary);
+        border: 1px solid var(--sy-border-strong);
+    }
+    
+    .sy-btn-secondary:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--sy-border-strong);
+        color: var(--sy-text-primary);
+    }
+    
+    .sy-btn-ghost {
+        background: transparent;
+        color: var(--sy-text-tertiary);
+        padding: 8px 12px;
+    }
+    
+    .sy-btn-ghost:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--sy-text-secondary);
+    }
+    
+    .sy-btn-icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    /* =====================================
+       INPUTS - Precise Entry
+       ===================================== */
+    .sy-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--sy-border-default);
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        color: var(--sy-text-primary);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .sy-input:focus {
+        outline: none;
+        border-color: var(--sy-primary);
+        box-shadow: 0 0 0 3px var(--sy-primary-subtle);
+    }
+    
+    .sy-input::placeholder {
+        color: var(--sy-text-muted);
+    }
+    
+    .sy-textarea {
+        min-height: 100px;
+        resize: vertical;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    /* =====================================
+       OUTPUT DISPLAY - Rich Content
+       ===================================== */
+    .sy-output {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--sy-text-secondary);
+    }
+    
+    .sy-output h1, .sy-output h2, .sy-output h3 {
+        font-weight: 600;
+        color: var(--sy-text-primary);
+        margin: 1.5em 0 0.5em;
+        letter-spacing: -0.02em;
+    }
+    
+    .sy-output h1 { font-size: 1.25em; }
+    .sy-output h2 { font-size: 1.1em; }
+    .sy-output h3 { font-size: 1em; }
+    
+    .sy-output p {
+        margin: 0.75em 0;
+    }
+    
+    .sy-output ul, .sy-output ol {
+        margin: 0.75em 0;
+        padding-left: 1.5em;
+    }
+    
+    .sy-output li {
+        margin: 0.25em 0;
+    }
+    
+    .sy-output code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9em;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        color: var(--sy-primary);
+    }
+    
+    .sy-output pre {
+        background: var(--sy-void);
+        border: 1px solid var(--sy-border-subtle);
+        border-radius: 8px;
+        padding: 16px;
+        overflow-x: auto;
+        margin: 1em 0;
+    }
+    
+    .sy-output pre code {
+        background: none;
+        padding: 0;
+        color: var(--sy-text-secondary);
+    }
+    
+    .sy-output strong {
+        color: var(--sy-text-primary);
+        font-weight: 600;
+    }
+    
+    .sy-output blockquote {
+        border-left: 3px solid var(--sy-primary);
+        padding-left: 16px;
+        margin: 1em 0;
+        color: var(--sy-text-tertiary);
+        font-style: italic;
+    }
+
+    /* =====================================
+       TASK LIST - Sidebar Items
+       ===================================== */
+    .sy-task-item {
+        padding: 12px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        margin-bottom: 4px;
+    }
+    
+    .sy-task-item:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .sy-task-item.selected {
+        background: var(--sy-primary-subtle);
+        border-color: var(--sy-border-active);
+    }
+    
+    .sy-task-id {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--sy-text-muted);
+    }
+    
+    .sy-task-item.selected .sy-task-id {
+        color: var(--sy-primary);
+    }
+    
+    .sy-task-title {
+        font-size: 13px;
+        color: var(--sy-text-secondary);
+        margin-top: 4px;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .sy-task-item.selected .sy-task-title {
+        color: var(--sy-text-primary);
+    }
+    
+    .sy-task-status {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    
+    .sy-task-status.completed { background: var(--sy-success); }
+    .sy-task-status.running { background: var(--sy-amber); animation: sy-pulse 1.5s ease-in-out infinite; }
+    .sy-task-status.failed { background: var(--sy-error); }
+    .sy-task-status.pending { background: var(--sy-text-muted); }
+
+    /* =====================================
+       SCROLLBAR - Minimal
+       ===================================== */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* =====================================
+       ANIMATIONS - Meaningful Only
+       ===================================== */
+    @keyframes sy-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+    }
+    
+    @keyframes sy-edge-flow {
+        from { stroke-dashoffset: 12; }
+        to { stroke-dashoffset: 0; }
+    }
+    
+    @keyframes sy-fade-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes sy-scale-in {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes sy-slide-up {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .sy-animate-in {
+        animation: sy-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .sy-animate-scale {
+        animation: sy-scale-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .sy-animate-slide {
+        animation: sy-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* =====================================
+       OPERATIONAL MODE - Focus State
+       ===================================== */
+    .sy-operational-mode .sy-sidebar {
+        opacity: 0.6;
+        transition: opacity 0.5s ease;
+    }
+    
+    .sy-operational-mode .sy-sidebar:hover {
+        opacity: 1;
+    }
+
+    /* =====================================
+       EVAL METRICS - Research Grade
+       ===================================== */
+    .sy-eval-score {
+        position: relative;
+        padding: 20px;
+        background: var(--sy-surface);
+        border: 1px solid var(--sy-border-subtle);
+        border-radius: 12px;
+        text-align: center;
+    }
+    
+    .sy-eval-score.highlight {
+        border-color: var(--sy-primary);
+        background: var(--sy-primary-subtle);
+    }
+    
+    .sy-eval-score-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 36px;
+        font-weight: 600;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+    
+    .sy-eval-score-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--sy-text-tertiary);
+    }
+    
+    .sy-eval-confidence {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--sy-border-void);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: var(--sy-text-muted);
+    }
+}
+
+/* =====================================
+   UTILITY CLASSES
+   ===================================== */
+@layer utilities {
+    .sy-gap-page { gap: 24px; }
+    .sy-gap-section { gap: 20px; }
+    .sy-gap-card { gap: 16px; }
+    .sy-gap-item { gap: 12px; }
+    .sy-gap-tight { gap: 8px; }
+    
+    .sy-text-success { color: var(--sy-success); }
+    .sy-text-warning { color: var(--sy-warning); }
+    .sy-text-error { color: var(--sy-error); }
+    .sy-text-primary { color: var(--sy-primary); }
+    .sy-text-amber { color: var(--sy-amber); }
+    
+    .sy-bg-success-subtle { background: var(--sy-success-glow); }
+    .sy-bg-primary-subtle { background: var(--sy-primary-subtle); }
+    .sy-bg-amber-subtle { background: var(--sy-amber-subtle); }
+    .sy-bg-error-subtle { background: var(--sy-error-glow); }
+}
