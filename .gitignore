@@ -10,4 +10,7 @@ node_modules/
 
 # System
 .DS_Store
-Thumbs.dbcomp arch/
+Thumbs.db
+
+# University coursework (not part of Synaptra)
+comp arch/
