@@ -32,6 +32,8 @@ function AppContent() {
   const [tasks, setTasks] = useState([]);
   const [settings, setSettings] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [memory, setMemory] = useState([]);
+  const [memoryStats, setMemoryStats] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -50,6 +52,7 @@ function AppContent() {
       setTasks(data);
     } catch (e) {
       console.error("Failed to fetch tasks:", e);
+      toast.error("Failed to load tasks", { description: "Check that the backend is running" });
     }
   }, []);
 
@@ -61,6 +64,45 @@ function AppContent() {
       console.error("Failed to fetch settings:", e);
     }
   }, []);
+
+  const fetchMemory = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`${API}/memory`);
+      setMemory(data);
+    } catch (e) {
+      console.error("Failed to fetch memory:", e);
+    }
+  }, []);
+
+  const fetchMemoryStats = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`${API}/memory/stats`);
+      setMemoryStats(data);
+    } catch (e) {
+      console.error("Failed to fetch memory stats:", e);
+    }
+  }, []);
+
+  const searchMemory = useCallback(async (query, limit = 10, threshold = 0.5) => {
+    try {
+      const { data } = await axios.post(`${API}/memory/search`, { query, limit, threshold });
+      return data;
+    } catch (e) {
+      console.error("Failed to search memory:", e);
+      return [];
+    }
+  }, []);
+
+  const deleteMemoryItem = async (itemId) => {
+    try {
+      await axios.delete(`${API}/memory/${itemId}`);
+      setMemory(prev => prev.filter(m => m.id !== itemId));
+      toast.success("Memory item deleted");
+      fetchMemoryStats();
+    } catch (e) {
+      toast.error("Failed to delete memory item");
+    }
+  };
 
   const createTask = async (inputText, imageBase64 = null, taskType = null) => {
     setIsLoading(true);
@@ -118,13 +160,16 @@ function AppContent() {
     fetchSystemStatus();
     fetchTasks();
     fetchSettings();
+    fetchMemory();
+    fetchMemoryStats();
     const interval = setInterval(fetchSystemStatus, 30000);
     return () => clearInterval(interval);
-  }, [fetchSystemStatus, fetchTasks, fetchSettings]);
+  }, [fetchSystemStatus, fetchTasks, fetchSettings, fetchMemory, fetchMemoryStats]);
 
   const contextValue = {
-    systemStatus, tasks, settings, isLoading,
-    createTask, deleteTask, fetchTasks, updateSettings, navigate
+    systemStatus, tasks, settings, isLoading, memory, memoryStats,
+    createTask, deleteTask, fetchTasks, updateSettings, navigate,
+    fetchMemory, fetchMemoryStats, searchMemory, deleteMemoryItem
   };
 
   const pageTitles = {

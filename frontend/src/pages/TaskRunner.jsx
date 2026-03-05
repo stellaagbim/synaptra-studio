@@ -1,9 +1,12 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useApp } from "@/App";
-import { 
-  Send, Upload, X, Play, CheckCircle2, Circle, Loader2, 
+import { useSearchParams } from "react-router-dom";
+import {
+  Send, Upload, X, Play, CheckCircle2, Circle, Loader2,
   XCircle, AlertCircle, FileText, ChevronRight,
-  Clock, Cpu, Hash, ArrowRight, Zap
+  Clock, Cpu, Hash, ArrowRight, Zap, Brain,
+  GitBranch, ChevronDown, ChevronUp, Lightbulb,
+  Maximize2, Minimize2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,10 +29,112 @@ const taskTypes = [
 const PIPELINE_STAGES = [
   { id: 'input', name: 'Input Reception', desc: 'Validating input data' },
   { id: 'preprocess', name: 'Preprocessing', desc: 'Preparing data' },
+  { id: 'memory', name: 'Memory Retrieval', desc: 'Searching semantic memory' },
   { id: 'analysis', name: 'AI Analysis', desc: 'Executing model' },
   { id: 'eval', name: 'Evaluation', desc: 'Computing metrics' },
   { id: 'output', name: 'Output Generation', desc: 'Formatting results' },
 ];
+
+const PHASE_COLORS = {
+  input_reception: { bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/20' },
+  preprocessing: { bg: 'bg-violet-500/10', text: 'text-violet-400', border: 'border-violet-500/20' },
+  memory_retrieval: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/20' },
+  analysis: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20' },
+  evaluation: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
+  output_generation: { bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/20' },
+  error: { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/20' },
+};
+
+const TraceEntry = ({ trace, index }) => {
+  const [expanded, setExpanded] = useState(false);
+  const colors = PHASE_COLORS[trace.phase] || PHASE_COLORS.analysis;
+  const confidencePct = trace.confidence != null ? Math.round(trace.confidence * 100) : null;
+
+  return (
+    <div className={`rounded-lg border ${colors.border} ${colors.bg} transition-all`}>
+      <div
+        className="flex items-start gap-3 p-3 cursor-pointer"
+        onClick={() => setExpanded(!expanded)}
+      >
+        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 ${colors.bg} ${colors.text}`}>
+          {index + 1}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${colors.bg} ${colors.text}`}>
+              {trace.phase}
+            </span>
+            <span className="text-[10px] text-[var(--sy-text-muted)] font-mono">
+              {trace.action}
+            </span>
+            {trace.duration_ms != null && (
+              <span className="text-[10px] text-[var(--sy-text-muted)] ml-auto">
+                {trace.duration_ms}ms
+              </span>
+            )}
+          </div>
+          <p className="text-xs text-[var(--sy-text-secondary)] leading-relaxed">
+            {trace.reasoning}
+          </p>
+          {confidencePct != null && (
+            <div className="flex items-center gap-2 mt-2">
+              <div className="flex-1 h-1 rounded-full bg-[var(--sy-surface)] overflow-hidden max-w-[120px]">
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{
+                    width: `${confidencePct}%`,
+                    background: confidencePct >= 80 ? 'var(--sy-success)' : confidencePct >= 50 ? 'var(--sy-amber)' : 'var(--sy-error)'
+                  }}
+                />
+              </div>
+              <span className="text-[10px] text-[var(--sy-text-muted)] font-mono">{confidencePct}%</span>
+            </div>
+          )}
+        </div>
+        {(Object.keys(trace.inputs || {}).length > 0 || Object.keys(trace.outputs || {}).length > 0) && (
+          <div className="text-[var(--sy-text-muted)] mt-1">
+            {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </div>
+        )}
+      </div>
+
+      {expanded && (
+        <div className="px-3 pb-3 pt-0 border-t border-[var(--sy-border-void)] mx-3 mt-0 pt-3 space-y-3">
+          {Object.keys(trace.inputs || {}).length > 0 && (
+            <div>
+              <div className="text-[10px] text-[var(--sy-text-muted)] mb-1 font-medium">INPUTS</div>
+              <div className="space-y-1">
+                {Object.entries(trace.inputs).map(([k, v]) => (
+                  <div key={k} className="flex items-start gap-2 text-[10px]">
+                    <span className="text-[var(--sy-text-muted)] font-mono shrink-0">{k}:</span>
+                    <span className="text-[var(--sy-text-tertiary)] font-mono break-all">
+                      {typeof v === 'object' ? JSON.stringify(v) : String(v).slice(0, 200)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {Object.keys(trace.outputs || {}).length > 0 && (
+            <div>
+              <div className="text-[10px] text-[var(--sy-text-muted)] mb-1 font-medium">OUTPUTS</div>
+              <div className="space-y-1">
+                {Object.entries(trace.outputs).map(([k, v]) => (
+                  <div key={k} className="flex items-start gap-2 text-[10px]">
+                    <span className="text-[var(--sy-text-muted)] font-mono shrink-0">{k}:</span>
+                    <span className="text-[var(--sy-text-tertiary)] font-mono break-all">
+                      {typeof v === 'object' ? JSON.stringify(v) : String(v).slice(0, 200)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const TaskRunner = () => {
   const { tasks, createTask, isLoading } = useApp();
@@ -37,15 +142,22 @@ export const TaskRunner = () => {
   const [taskType, setTaskType] = useState("general_analysis");
   const [imageBase64, setImageBase64] = useState(null);
   const [imageName, setImageName] = useState("");
-  const [activeTaskId, setActiveTaskId] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTaskId = searchParams.get("task") || null;
+  const setActiveTaskId = useCallback((id) => {
+    setSearchParams(id ? { task: id } : {}, { replace: true });
+  }, [setSearchParams]);
+  const [centerTab, setCenterTab] = useState("output"); // "output" | "traces"
+  const [expandedPanel, setExpandedPanel] = useState(null); // null | "output" | "pipeline"
   const fileInputRef = useRef(null);
 
   const activeTask = tasks.find(t => t.id === activeTaskId) || null;
+  const traces = activeTask?.reasoning_traces || [];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!inputText.trim() && !imageBase64) return;
-    
+
     try {
       const newTask = await createTask(inputText, imageBase64, taskType);
       setInputText("");
@@ -123,7 +235,7 @@ export const TaskRunner = () => {
             New
           </Button>
         </div>
-        
+
         <div className="px-3 py-3 border-b border-[var(--sy-border-void)]">
           <Select value={taskType} onValueChange={setTaskType}>
             <SelectTrigger className="bg-transparent border-[var(--sy-border-default)] text-[var(--sy-text-secondary)] text-xs h-9">
@@ -138,7 +250,7 @@ export const TaskRunner = () => {
             </SelectContent>
           </Select>
         </div>
-        
+
         <ScrollArea className="flex-1 p-2">
           {tasks.length === 0 ? (
             <div className="text-center py-12 text-[var(--sy-text-muted)] text-sm">
@@ -176,160 +288,232 @@ export const TaskRunner = () => {
       {/* Center Panel - Main Workspace */}
       <div className="flex-1 flex flex-col sy-gap-section min-w-0">
         {/* Input Section */}
-        <div className="sy-panel-solid p-5">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="relative">
-              <Textarea
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder="Enter task input for analysis..."
-                className="sy-input sy-textarea min-h-[100px] pr-14 resize-none"
-                disabled={isLoading}
-                data-testid="task-input"
-              />
-              <Button
-                type="submit"
-                size="icon"
-                className="absolute bottom-3 right-3 sy-btn sy-btn-primary w-10 h-10"
-                disabled={isLoading || (!inputText.trim() && !imageBase64)}
-                data-testid="run-btn"
+        {!expandedPanel && (
+          <div className="sy-panel-solid p-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="relative">
+                <Textarea
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder="Enter task input for analysis..."
+                  className="sy-input sy-textarea min-h-[100px] pr-14 resize-none"
+                  disabled={isLoading}
+                  data-testid="task-input"
+                />
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="absolute bottom-3 right-3 sy-btn sy-btn-primary w-10 h-10"
+                  disabled={isLoading || (!inputText.trim() && !imageBase64)}
+                  data-testid="run-btn"
+                >
+                  {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                </Button>
+              </div>
+
+              <div
+                className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all ${
+                  imageBase64
+                    ? 'border-[var(--sy-primary)] bg-[var(--sy-primary-subtle)]'
+                    : 'border-[var(--sy-border-default)] hover:border-[var(--sy-border-strong)]'
+                }`}
+                onClick={() => fileInputRef.current?.click()}
+                data-testid="file-upload"
               >
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              </Button>
-            </div>
-            
-            <div
-              className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all ${
-                imageBase64 
-                  ? 'border-[var(--sy-primary)] bg-[var(--sy-primary-subtle)]' 
-                  : 'border-[var(--sy-border-default)] hover:border-[var(--sy-border-strong)]'
-              }`}
-              onClick={() => fileInputRef.current?.click()}
-              data-testid="file-upload"
-            >
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(e) => handleFileSelect(e.target.files[0])}
-              />
-              {imageBase64 ? (
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-10 h-10 rounded bg-[var(--sy-surface)] overflow-hidden border border-[var(--sy-border-default)]">
-                    <img src={`data:image/jpeg;base64,${imageBase64}`} alt="" className="w-full h-full object-cover" />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => handleFileSelect(e.target.files[0])}
+                />
+                {imageBase64 ? (
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-10 h-10 rounded bg-[var(--sy-surface)] overflow-hidden border border-[var(--sy-border-default)]">
+                      <img src={`data:image/jpeg;base64,${imageBase64}`} alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <span className="text-sm text-[var(--sy-text-secondary)]">{imageName}</span>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setImageBase64(null); setImageName(""); }}
+                      className="text-[var(--sy-text-muted)] hover:text-[var(--sy-error)] transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
-                  <span className="text-sm text-[var(--sy-text-secondary)]">{imageName}</span>
-                  <button 
-                    type="button" 
-                    onClick={(e) => { e.stopPropagation(); setImageBase64(null); setImageName(""); }} 
-                    className="text-[var(--sy-text-muted)] hover:text-[var(--sy-error)] transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center gap-2 text-[var(--sy-text-muted)]">
-                  <Upload className="w-4 h-4" />
-                  <span className="text-sm">Attach image (optional)</span>
-                </div>
-              )}
-            </div>
-          </form>
-        </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2 text-[var(--sy-text-muted)]">
+                    <Upload className="w-4 h-4" />
+                    <span className="text-sm">Attach image (optional)</span>
+                  </div>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* Execution Pipeline */}
-        <div className="sy-panel-solid flex-1 flex flex-col overflow-hidden">
-          <div className="sy-panel-header">
-            <div>
-              <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Execution Pipeline</h3>
-              <p className="sy-label mt-1">
-                {activeTask ? `Task ${activeTask.id.slice(0,8).toUpperCase()}` : 'Awaiting execution'}
-              </p>
-            </div>
-            {activeTask?.status === 'completed' && (
-              <div className="flex items-center gap-2 text-[var(--sy-success)]">
-                <CheckCircle2 className="w-4 h-4" />
-                <span className="sy-data text-xs">COMPLETE</span>
+        {(!expandedPanel || expandedPanel === 'pipeline') && (
+          <div className={`sy-panel-solid flex-1 flex flex-col overflow-hidden ${expandedPanel === 'pipeline' ? 'flex-[1_1_100%]' : ''}`}>
+            <div className="sy-panel-header">
+              <div>
+                <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Execution Pipeline</h3>
+                <p className="sy-label mt-1">
+                  {activeTask ? `Task ${activeTask.id.slice(0,8).toUpperCase()}` : 'Awaiting execution'}
+                </p>
               </div>
-            )}
-            {activeTask?.status === 'failed' && (
-              <div className="flex items-center gap-2 text-[var(--sy-error)]">
-                <XCircle className="w-4 h-4" />
-                <span className="sy-data text-xs">FAILED</span>
-              </div>
-            )}
-            {activeTask?.status === 'processing' && (
-              <div className="flex items-center gap-2 text-[var(--sy-amber)]">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="sy-data text-xs">PROCESSING</span>
-              </div>
-            )}
-          </div>
-          
-          <ScrollArea className="flex-1 p-5">
-            <div className="sy-pipeline">
-              {PIPELINE_STAGES.map((stage, idx) => {
-                const stepData = getStepData(idx);
-                const isActive = stepData.status === 'running';
-                const isComplete = stepData.status === 'completed';
-                const isFailed = stepData.status === 'failed';
-                
-                return (
-                  <div key={stage.id} className={`sy-pipeline-step ${isComplete ? 'completed' : ''}`}>
-                    <div className={`sy-pipeline-node ${stepData.status}`}>
-                      {isComplete ? <CheckCircle2 className="w-4 h-4" /> :
-                       isActive ? <Loader2 className="w-4 h-4 animate-spin" /> :
-                       isFailed ? <XCircle className="w-4 h-4" /> :
-                       <Circle className="w-4 h-4" />}
-                    </div>
-                    <div className="sy-pipeline-content">
-                      <div className={`sy-pipeline-title ${!activeTask || stepData.status === 'pending' ? 'muted' : ''}`}>
-                        {stage.name}
-                      </div>
-                      <div className="sy-pipeline-detail">{stepData.details}</div>
-                    </div>
-                    {stepData.duration && (
-                      <div className="sy-pipeline-timing">{stepData.duration}ms</div>
-                    )}
+              <div className="flex items-center gap-2">
+                {activeTask?.status === 'completed' && (
+                  <div className="flex items-center gap-2 text-[var(--sy-success)]">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span className="sy-data text-xs">COMPLETE</span>
                   </div>
-                );
-              })}
+                )}
+                {activeTask?.status === 'failed' && (
+                  <div className="flex items-center gap-2 text-[var(--sy-error)]">
+                    <XCircle className="w-4 h-4" />
+                    <span className="sy-data text-xs">FAILED</span>
+                  </div>
+                )}
+                {activeTask?.status === 'processing' && (
+                  <div className="flex items-center gap-2 text-[var(--sy-amber)]">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span className="sy-data text-xs">PROCESSING</span>
+                  </div>
+                )}
+                <button
+                  onClick={() => setExpandedPanel(expandedPanel === 'pipeline' ? null : 'pipeline')}
+                  className="p-1.5 rounded text-[var(--sy-text-muted)] hover:text-[var(--sy-text-secondary)] hover:bg-[var(--sy-elevated)] transition-all"
+                  title={expandedPanel === 'pipeline' ? 'Collapse pipeline' : 'Expand pipeline'}
+                  data-testid="expand-pipeline-btn"
+                >
+                  {expandedPanel === 'pipeline' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
-          </ScrollArea>
-        </div>
 
-        {/* Output Panel */}
-        <div className="sy-panel-solid flex-1 flex flex-col overflow-hidden">
-          <div className="sy-panel-header">
-            <div>
-              <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Output</h3>
-              <p className="sy-label mt-1">
-                {hasOutput ? 'Analysis results' : 'Awaiting execution'}
-              </p>
-            </div>
+            <ScrollArea className="flex-1 p-5">
+              <div className="sy-pipeline">
+                {PIPELINE_STAGES.map((stage, idx) => {
+                  const stepData = getStepData(idx);
+                  const isActive = stepData.status === 'running';
+                  const isComplete = stepData.status === 'completed';
+                  const isFailed = stepData.status === 'failed';
+
+                  return (
+                    <div key={stage.id} className={`sy-pipeline-step ${isComplete ? 'completed' : ''}`}>
+                      <div className={`sy-pipeline-node ${stepData.status}`}>
+                        {isComplete ? <CheckCircle2 className="w-4 h-4" /> :
+                         isActive ? <Loader2 className="w-4 h-4 animate-spin" /> :
+                         isFailed ? <XCircle className="w-4 h-4" /> :
+                         <Circle className="w-4 h-4" />}
+                      </div>
+                      <div className="sy-pipeline-content">
+                        <div className={`sy-pipeline-title ${!activeTask || stepData.status === 'pending' ? 'muted' : ''}`}>
+                          {stage.name}
+                        </div>
+                        <div className="sy-pipeline-detail">{stepData.details}</div>
+                      </div>
+                      {stepData.duration && (
+                        <div className="sy-pipeline-timing">{stepData.duration}ms</div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
           </div>
+        )}
+
+        {/* Output / Reasoning Traces Panel */}
+        {(!expandedPanel || expandedPanel === 'output') && (
+        <div className={`sy-panel-solid flex-1 flex flex-col overflow-hidden ${expandedPanel === 'output' ? 'flex-[1_1_100%]' : ''}`}>
+          <div className="sy-panel-header">
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setCenterTab("output")}
+                className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                  centerTab === "output"
+                    ? 'bg-[var(--sy-primary-subtle)] text-[var(--sy-primary)]'
+                    : 'text-[var(--sy-text-muted)] hover:text-[var(--sy-text-secondary)]'
+                }`}
+              >
+                Output
+              </button>
+              <button
+                onClick={() => setCenterTab("traces")}
+                className={`px-3 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5 ${
+                  centerTab === "traces"
+                    ? 'bg-[var(--sy-primary-subtle)] text-[var(--sy-primary)]'
+                    : 'text-[var(--sy-text-muted)] hover:text-[var(--sy-text-secondary)]'
+                }`}
+              >
+                <GitBranch className="w-3 h-3" />
+                Reasoning Traces
+                {traces.length > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    centerTab === "traces" ? 'bg-[var(--sy-primary)] text-[var(--sy-void)]' : 'bg-[var(--sy-elevated)] text-[var(--sy-text-muted)]'
+                  }`}>
+                    {traces.length}
+                  </span>
+                )}
+              </button>
+            </div>
+            <button
+              onClick={() => setExpandedPanel(expandedPanel === 'output' ? null : 'output')}
+              className="p-1.5 rounded text-[var(--sy-text-muted)] hover:text-[var(--sy-text-secondary)] hover:bg-[var(--sy-elevated)] transition-all"
+              title={expandedPanel === 'output' ? 'Collapse output' : 'Expand output'}
+              data-testid="expand-output-btn"
+            >
+              {expandedPanel === 'output' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+          </div>
+
           <ScrollArea className="flex-1 p-5">
-            {activeTask?.status === 'failed' ? (
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-[var(--sy-error-glow)] border border-[var(--sy-error)]/30">
-                <AlertCircle className="w-5 h-5 text-[var(--sy-error)] flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-[var(--sy-error)]">Execution Failed</p>
-                  <p className="text-xs text-[var(--sy-error)]/70 mt-1">{activeTask.error_message || 'Unknown error'}</p>
-                </div>
-              </div>
-            ) : hasOutput ? (
-              <div className="sy-output sy-animate-slide" data-testid="task-output">
-                {activeTask.output}
-              </div>
+            {centerTab === "output" ? (
+              <>
+                {activeTask?.status === 'failed' ? (
+                  <div className="flex items-start gap-3 p-4 rounded-lg bg-[var(--sy-error-glow)] border border-[var(--sy-error)]/30">
+                    <AlertCircle className="w-5 h-5 text-[var(--sy-error)] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-[var(--sy-error)]">Execution Failed</p>
+                      <p className="text-xs text-[var(--sy-error)]/70 mt-1">{activeTask.error_message || 'Unknown error'}</p>
+                    </div>
+                  </div>
+                ) : hasOutput ? (
+                  <div className="sy-output sy-animate-slide" data-testid="task-output">
+                    {activeTask.output}
+                  </div>
+                ) : (
+                  <div className="text-center py-16 text-[var(--sy-text-muted)]">
+                    <Zap className="w-10 h-10 mx-auto mb-4 opacity-30" strokeWidth={1} />
+                    <p className="text-sm">Execute a task to view results</p>
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="text-center py-16 text-[var(--sy-text-muted)]">
-                <Zap className="w-10 h-10 mx-auto mb-4 opacity-30" strokeWidth={1} />
-                <p className="text-sm">Execute a task to view results</p>
-              </div>
+              /* Reasoning Traces View */
+              <>
+                {traces.length === 0 ? (
+                  <div className="text-center py-16 text-[var(--sy-text-muted)]">
+                    <Lightbulb className="w-10 h-10 mx-auto mb-4 opacity-30" strokeWidth={1} />
+                    <p className="text-sm">Execute a task to view reasoning traces</p>
+                    <p className="text-xs mt-1 text-[var(--sy-text-muted)]">
+                      Every decision the agent makes is logged here
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {traces.map((trace, idx) => (
+                      <TraceEntry key={trace.id || idx} trace={trace} index={idx} />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </ScrollArea>
         </div>
+        )}
       </div>
 
       {/* Right Panel - Metrics */}
@@ -337,7 +521,7 @@ export const TaskRunner = () => {
         <div className="sy-panel-header">
           <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Metrics</h3>
         </div>
-        
+
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-6">
             {/* Evaluation Scores */}
@@ -361,7 +545,7 @@ export const TaskRunner = () => {
                         </span>
                       </div>
                       <div className="sy-metric-bar">
-                        <div 
+                        <div
                           className={`sy-metric-fill ${color}`}
                           style={{ width: `${value || 0}%` }}
                         />
@@ -370,7 +554,7 @@ export const TaskRunner = () => {
                   );
                 })}
               </div>
-              
+
               {/* Overall Score */}
               <div className="mt-6 pt-4 border-t border-[var(--sy-border-void)]">
                 <div className="sy-eval-score highlight">
@@ -380,13 +564,13 @@ export const TaskRunner = () => {
                   <div className="sy-eval-score-label">Overall Score</div>
                   {hasMetrics && (
                     <div className="sy-eval-confidence">
-                      Heuristic composite • Weighted average
+                      Semantic composite • Weighted average
                     </div>
                   )}
                 </div>
               </div>
             </div>
-            
+
             {/* Performance */}
             <div>
               <div className="sy-label mb-3">Performance</div>
@@ -397,14 +581,14 @@ export const TaskRunner = () => {
                     <span className="text-xs">Execution Time</span>
                   </div>
                   <span className="sy-data text-sm text-[var(--sy-text-primary)]">
-                    {activeTask?.metadata?.processing_time_ms 
+                    {activeTask?.metadata?.processing_time_ms
                       ? `${(activeTask.metadata.processing_time_ms / 1000).toFixed(2)}s`
                       : '—'}
                   </span>
                 </div>
               </div>
             </div>
-            
+
             {/* Metadata */}
             <div>
               <div className="sy-label mb-3">Run Metadata</div>
@@ -418,11 +602,17 @@ export const TaskRunner = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--sy-text-muted)]">Created</span>
                   <span className="sy-data text-[var(--sy-text-tertiary)]">
-                    {activeTask?.created_at 
-                      ? new Date(activeTask.created_at).toLocaleString('en-US', { 
-                          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+                    {activeTask?.created_at
+                      ? new Date(activeTask.created_at).toLocaleString('en-US', {
+                          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
                         })
                       : '—'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[var(--sy-text-muted)]">Provider</span>
+                  <span className="sy-data text-[var(--sy-text-tertiary)] capitalize">
+                    {activeTask?.metadata?.provider || '—'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -437,8 +627,39 @@ export const TaskRunner = () => {
                     {activeTask?.metadata?.input_modality || '—'}
                   </span>
                 </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[var(--sy-text-muted)]">Traces</span>
+                  <span className="sy-data text-[var(--sy-text-tertiary)]">
+                    {traces.length || '—'}
+                  </span>
+                </div>
               </div>
             </div>
+
+            {/* RAG Context */}
+            {activeTask?.metadata?.retrieved_memory_ids?.length > 0 && (
+              <div>
+                <div className="sy-label mb-3">RAG Context</div>
+                <div className="sy-metric-card">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Brain className="w-3.5 h-3.5 text-[var(--sy-primary)]" strokeWidth={1.5} />
+                    <span className="text-xs text-[var(--sy-text-secondary)]">
+                      {activeTask.metadata.retrieved_memory_ids.length} memor{activeTask.metadata.retrieved_memory_ids.length === 1 ? 'y' : 'ies'} retrieved
+                    </span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {activeTask.metadata.retrieved_memory_ids.map((memId) => (
+                      <div
+                        key={memId}
+                        className="sy-data text-[10px] text-[var(--sy-text-muted)] px-2 py-1.5 rounded bg-[var(--sy-elevated)] border border-[var(--sy-border-void)]"
+                      >
+                        {memId.slice(0, 12).toUpperCase()}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
       </div>
