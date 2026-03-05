@@ -1,5 +1,6 @@
+import { useState, useMemo } from "react";
 import { useApp } from "@/App";
-import { History as HistoryIcon, Search, Download, Filter, FileText, Code, Image, Zap } from "lucide-react";
+import { History as HistoryIcon, Search, Filter, FileText, Code, Image, Zap, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,37 +10,157 @@ const typeIcons = {
   code_analysis: Code,
   image_analysis: Image,
   general_analysis: Zap,
+  document_processing: FileText,
 };
 
+const TYPE_FILTERS = [
+  { value: "all", label: "All Types" },
+  { value: "general_analysis", label: "General" },
+  { value: "text_summarization", label: "Text" },
+  { value: "code_analysis", label: "Code" },
+  { value: "image_analysis", label: "Image" },
+  { value: "document_processing", label: "Document" },
+];
+
+const STATUS_FILTERS = [
+  { value: "all", label: "All" },
+  { value: "completed", label: "Completed" },
+  { value: "failed", label: "Failed" },
+];
+
 export const History = () => {
-  const { tasks, setSelectedTask, navigate } = useApp();
+  const { tasks, navigate } = useApp();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [showFilters, setShowFilters] = useState(false);
+
+  const filteredTasks = useMemo(() => {
+    return tasks.filter(task => {
+      // Search filter
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesInput = task.input_text?.toLowerCase().includes(q);
+        const matchesId = task.id?.toLowerCase().includes(q);
+        const matchesOutput = task.output?.toLowerCase().includes(q);
+        if (!matchesInput && !matchesId && !matchesOutput) return false;
+      }
+
+      // Type filter
+      if (typeFilter !== "all" && task.task_type !== typeFilter) return false;
+
+      // Status filter
+      if (statusFilter !== "all" && task.status !== statusFilter) return false;
+
+      return true;
+    });
+  }, [tasks, searchQuery, typeFilter, statusFilter]);
+
+  const hasActiveFilters = searchQuery || typeFilter !== "all" || statusFilter !== "all";
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setTypeFilter("all");
+    setStatusFilter("all");
+  };
 
   return (
-    <div className="h-full flex flex-col" data-testid="history-page">
+    <div className="h-full flex flex-col sy-animate-in" data-testid="history-page">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-semibold text-white">History</h1>
-          <p className="text-sm text-white/50">Searchable run ledger with full audit trail</p>
+          <p className="text-sm text-white/50">
+            {filteredTasks.length === tasks.length
+              ? `${tasks.length} total runs`
+              : `${filteredTasks.length} of ${tasks.length} runs`}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <Input 
-              placeholder="Search runs..." 
+            <Input
+              placeholder="Search runs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 w-64 bg-[#161b22] border-[rgba(48,54,61,0.8)] text-white"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
-          <Button variant="outline" className="border-[rgba(48,54,61,0.8)] text-white/70">
+          <Button
+            variant="outline"
+            className={`border-[rgba(48,54,61,0.8)] ${showFilters ? 'text-[var(--sy-primary)] border-[var(--sy-primary)]/30' : 'text-white/70'}`}
+            onClick={() => setShowFilters(!showFilters)}
+          >
             <Filter className="w-4 h-4 mr-2" />
             Filter
-          </Button>
-          <Button variant="outline" className="border-[rgba(48,54,61,0.8)] text-white/70">
-            <Download className="w-4 h-4 mr-2" />
-            Export
+            {hasActiveFilters && (
+              <span className="ml-2 w-2 h-2 rounded-full bg-[var(--sy-primary)]" />
+            )}
           </Button>
         </div>
       </div>
-      
+
+      {/* Filter Bar */}
+      {showFilters && (
+        <div className="mb-4 flex items-center gap-4 p-3 rounded-lg bg-[var(--sy-surface)] border border-[var(--sy-border-subtle)] sy-animate-in">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-[var(--sy-text-muted)] uppercase tracking-wider">Type</span>
+            <div className="flex gap-1">
+              {TYPE_FILTERS.map(f => (
+                <button
+                  key={f.value}
+                  onClick={() => setTypeFilter(f.value)}
+                  className={`px-2.5 py-1 rounded text-[11px] transition-all ${
+                    typeFilter === f.value
+                      ? 'bg-[var(--sy-primary-subtle)] text-[var(--sy-primary)]'
+                      : 'text-[var(--sy-text-muted)] hover:text-[var(--sy-text-secondary)]'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="w-px h-5 bg-[var(--sy-border-subtle)]" />
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-[var(--sy-text-muted)] uppercase tracking-wider">Status</span>
+            <div className="flex gap-1">
+              {STATUS_FILTERS.map(f => (
+                <button
+                  key={f.value}
+                  onClick={() => setStatusFilter(f.value)}
+                  className={`px-2.5 py-1 rounded text-[11px] transition-all ${
+                    statusFilter === f.value
+                      ? 'bg-[var(--sy-primary-subtle)] text-[var(--sy-primary)]'
+                      : 'text-[var(--sy-text-muted)] hover:text-[var(--sy-text-secondary)]'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {hasActiveFilters && (
+            <>
+              <div className="w-px h-5 bg-[var(--sy-border-subtle)]" />
+              <button
+                onClick={clearFilters}
+                className="text-[11px] text-[var(--sy-error)] hover:underline"
+              >
+                Clear all
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
       {tasks.length === 0 ? (
         <div className="card-base flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -48,28 +169,37 @@ export const History = () => {
             <p className="text-sm text-white/50">Execute tasks to populate the history ledger</p>
           </div>
         </div>
+      ) : filteredTasks.length === 0 ? (
+        <div className="card-base flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <Search className="w-12 h-12 text-white/20 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-white mb-2">No matching runs</h3>
+            <p className="text-sm text-white/50">Try adjusting your search or filters</p>
+            <button onClick={clearFilters} className="text-sm text-[var(--sy-primary)] mt-3 hover:underline">
+              Clear filters
+            </button>
+          </div>
+        </div>
       ) : (
         <div className="card-base flex-1 overflow-hidden">
           <div className="grid grid-cols-12 gap-4 p-4 border-b border-[rgba(48,54,61,0.8)] text-xs text-white/40 uppercase tracking-wider">
             <div className="col-span-2">Task ID</div>
             <div className="col-span-3">Input</div>
             <div className="col-span-2">Type</div>
-            <div className="col-span-2">Score</div>
+            <div className="col-span-1">Provider</div>
+            <div className="col-span-1">Score</div>
             <div className="col-span-2">Time</div>
             <div className="col-span-1">Status</div>
           </div>
-          
+
           <ScrollArea className="h-[calc(100%-50px)]">
-            {tasks.map((task) => {
+            {filteredTasks.map((task) => {
               const Icon = typeIcons[task.task_type] || Zap;
               return (
-                <div 
+                <div
                   key={task.id}
                   className="grid grid-cols-12 gap-4 p-4 border-b border-[rgba(48,54,61,0.3)] hover:bg-white/[0.02] cursor-pointer transition-colors"
-                  onClick={() => {
-                    setSelectedTask(task);
-                    navigate('/task-runner');
-                  }}
+                  onClick={() => navigate('/task-runner')}
                 >
                   <div className="col-span-2 font-mono text-sm text-cyan-400">
                     {task.id.slice(0, 8).toUpperCase()}
@@ -79,15 +209,20 @@ export const History = () => {
                   </div>
                   <div className="col-span-2 flex items-center gap-2 text-sm text-white/60">
                     <Icon className="w-4 h-4" />
-                    {task.task_type?.replace('_', ' ') || 'analysis'}
+                    {task.task_type?.replace(/_/g, ' ') || 'analysis'}
                   </div>
-                  <div className="col-span-2 text-sm font-mono">
+                  <div className="col-span-1 text-sm text-white/50 capitalize">
+                    {task.metadata?.provider || '—'}
+                  </div>
+                  <div className="col-span-1 text-sm font-mono">
                     <span className={task.evaluation?.overall_score >= 80 ? 'text-green-400' : task.evaluation?.overall_score >= 60 ? 'text-amber-400' : 'text-white/50'}>
                       {task.evaluation?.overall_score?.toFixed(1) || '—'}
                     </span>
                   </div>
                   <div className="col-span-2 text-sm text-white/50">
-                    {new Date(task.created_at).toLocaleDateString()}
+                    {new Date(task.created_at).toLocaleDateString('en-US', {
+                      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                    })}
                   </div>
                   <div className="col-span-1">
                     <div className={`w-2 h-2 rounded-full ${
