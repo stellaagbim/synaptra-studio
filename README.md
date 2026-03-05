@@ -8,6 +8,10 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<p align="center">
+  <img src="docs/screenshots/dashboard.jpeg" alt="Synaptra Studio Dashboard" width="100%">
+</p>
+
 ---
 
 ## Abstract
@@ -17,6 +21,52 @@ Synaptra Studio is an enterprise-grade web application designed to address the g
 This platform provides a unified interface for multimodal AI task execution (text and vision), research-grade evaluation with weighted composite scoring, and a memory subsystem that enables context persistence and retrieval. The system architecture follows modern distributed computing principles with a React-based frontend, FastAPI async backend, and MongoDB for persistent storage.
 
 **Keywords:** *Large Language Models, Agent Orchestration, Multimodal AI, Evaluation Metrics, Memory Systems, Human-AI Interaction*
+
+---
+
+## Platform Overview
+
+### Task Execution Pipeline
+Real-time observability into the six-stage execution pipeline with per-step timing and a multi-dimensional evaluation sidebar.
+
+<p align="center">
+  <img src="docs/screenshots/task-pipeline.jpeg" alt="Task Execution Pipeline" width="100%">
+</p>
+
+### AI Reasoning Traces
+Full transparency into the agent's decision-making process — every reasoning step is logged with phase, action, confidence, and duration.
+
+<p align="center">
+  <img src="docs/screenshots/reasoning-traces.jpeg" alt="Reasoning Traces" width="100%">
+</p>
+
+### Evaluation Metrics
+Aggregate scoring across five dimensions: Quality, Relevance, Efficiency, Plan Adherence, and Output Coherence.
+
+<p align="center">
+  <img src="docs/screenshots/eval-metrics.jpeg" alt="Evaluation Metrics" width="100%">
+</p>
+
+### Model Comparison
+Per-metric benchmark comparison across models and runs, enabling data-driven model selection.
+
+<p align="center">
+  <img src="docs/screenshots/model-comparison.jpeg" alt="Model Comparison" width="100%">
+</p>
+
+### Workflow Automations
+Create reusable workflows with pre-defined prompts, task types, and scheduling — execute manually or on a schedule.
+
+<p align="center">
+  <img src="docs/screenshots/automations.jpeg" alt="Workflow Automations" width="100%">
+</p>
+
+### Semantic Memory
+Persistent memory store with typed entries (Context, Summary, Artifact, Reference), vector embeddings, and semantic search.
+
+<p align="center">
+  <img src="docs/screenshots/memory.jpeg" alt="Semantic Memory" width="100%">
+</p>
 
 ---
 
@@ -53,14 +103,15 @@ Synaptra Studio addresses these challenges by providing a comprehensive operatio
 
 This work presents the following contributions:
 
-1. **Pipeline-Based Task Orchestration**: A five-stage execution model with real-time observability
+1. **Pipeline-Based Task Orchestration**: A six-stage execution model with real-time observability and reasoning traces
 2. **Multi-Dimensional Evaluation Framework**: Composite scoring across quality, relevance, efficiency, plan adherence, and output coherence
-3. **Typed Memory Subsystem**: Categorised memory storage (context, artifact, summary, reference) with retention policies
-4. **Evaluation Suite Infrastructure**: Reproducible benchmark execution with aggregate scoring and historical comparison
+3. **RAG-Enabled Memory Subsystem**: Typed memory storage with vector embeddings and semantic similarity retrieval
+4. **Evaluation Suite Infrastructure**: Reproducible benchmark execution with aggregate scoring, historical comparison, and model comparison
+5. **Workflow Automation Engine**: Reusable automation templates with manual and scheduled triggers
 
 ### 1.3 Design Philosophy
 
-The platform adheres to the "Deep Obsidian Void" design system—a visual language emphasising:
+The platform adheres to the "Deep Obsidian Void" design system, a visual language emphasising:
 
 - **Cinematic scale through information density**, not decorative effects
 - **Motion reserved for meaningful state transitions**
@@ -138,6 +189,7 @@ MongoDB serves as Synaptra's **long-term memory and audit log**. Unlike simple c
 | `memory` | Typed memory items (context, artifacts, summaries, references) |
 | `eval_suites` | Benchmark task collections for reproducible evaluation |
 | `eval_runs` | Historical evaluation results with aggregate scores |
+| `automations` | Reusable workflow templates with triggers and run history |
 | `settings` | System configuration and user preferences |
 
 **Benefits of MongoDB persistence:**
@@ -226,14 +278,15 @@ MongoDB serves as Synaptra's **long-term memory and audit log**. Unlike simple c
 
 ### 4.1 Task Orchestrator
 
-The Task Orchestrator implements a five-stage pipeline model:
+The Task Orchestrator implements a six-stage pipeline model:
 
 ```python
 class ExecutionPipeline:
     stages = [
         "Input Reception",      # Validate and normalise input
         "Preprocessing",        # Task type detection, modality classification
-        "AI Analysis",          # LLM inference with appropriate prompting
+        "Memory Retrieval",     # RAG search for relevant context (semantic similarity)
+        "AI Analysis",          # LLM inference with context-augmented prompting
         "Evaluation",           # Multi-metric quality assessment
         "Output Generation"     # Response formatting, memory persistence
     ]
@@ -540,7 +593,18 @@ yarn build
 | `POST` | `/api/eval/run/{suite_id}` | Execute evaluation suite |
 | `GET` | `/api/eval/runs` | List evaluation runs |
 
-### 8.4 Memory Endpoints
+### 8.4 Automation Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/automations` | List all automations |
+| `POST` | `/api/automations` | Create a new automation |
+| `GET` | `/api/automations/{id}` | Retrieve automation details |
+| `PUT` | `/api/automations/{id}` | Update automation (toggle enabled, edit fields) |
+| `DELETE` | `/api/automations/{id}` | Delete automation |
+| `POST` | `/api/automations/{id}/run` | Execute automation and return task result |
+
+### 8.5 Memory Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -580,13 +644,19 @@ The platform achieves 100% API endpoint coverage with 17 automated tests:
 
 ## 10. Future Work
 
-The following extensions are planned for future development:
+### Completed
 
-1. **Workflow Automation**: Visual workflow designer for multi-step agent pipelines
-2. **Trajectory Fidelity Metrics**: Evaluation of multi-step planning accuracy
-3. **Memory Embeddings**: Vector-based semantic retrieval using embedding models
-4. **Tool Augmentation**: Integration of external tools (web search, code execution)
-5. **Comparative Analysis**: Side-by-side evaluation run comparison with regression detection
+- ~~**Workflow Automation**~~: Reusable automation workflows with manual and scheduled triggers (implemented)
+- ~~**Memory Embeddings**~~: Vector-based semantic retrieval with similarity search and configurable thresholds (implemented)
+- ~~**Comparative Analysis**~~: Side-by-side evaluation run comparison with per-metric breakdown across models (implemented)
+
+### Planned
+
+1. **Visual Workflow Designer**: Drag-and-drop multi-step agent pipeline builder
+2. **Trajectory Fidelity Metrics**: Evaluation of multi-step planning accuracy and goal completion
+3. **Tool Augmentation**: Runtime integration of external tools (web search, code execution, file I/O)
+4. **Multi-Provider Benchmarking**: Automated evaluation across OpenAI, Anthropic, and Google Gemini in a single suite run
+5. **Export & Reporting**: PDF/Markdown report generation for evaluation results and task histories
 
 ---
 
