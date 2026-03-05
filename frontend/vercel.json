@@ -1,4 +1,5 @@
 {
+  "framework": "create-react-app",
   "buildCommand": "CI=false craco build",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
