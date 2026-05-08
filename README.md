@@ -34,7 +34,7 @@ Real-time observability into the six-stage execution pipeline with per-step timi
 </p>
 
 ### AI Reasoning Traces
-Full transparency into the agent's decision-making process — every reasoning step is logged with phase, action, confidence, and duration.
+Full transparency into the agent's decision-making process; every reasoning step is logged with phase, action, confidence, and duration.
 
 <p align="center">
   <img src="docs/screenshots/reasoning-traces.jpeg" alt="Reasoning Traces" width="100%">
@@ -682,4 +682,4 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 
 ---
 
-*Synaptra Studio — Advancing transparency and evaluation in AI agent operations.*
+*Synaptra Studio - Advancing transparency and evaluation in AI agent operations.*
