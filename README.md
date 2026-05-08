@@ -55,7 +55,7 @@ Per-metric benchmark comparison across models and runs, enabling data-driven mod
 </p>
 
 ### Workflow Automations
-Create reusable workflows with pre-defined prompts, task types, and scheduling — execute manually or on a schedule.
+Create reusable workflows with pre-defined prompts, task types, and scheduling; execute manually or on a schedule.
 
 <p align="center">
   <img src="docs/screenshots/automations.jpeg" alt="Workflow Automations" width="100%">
