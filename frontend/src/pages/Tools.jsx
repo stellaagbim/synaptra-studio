@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import {
-  Wrench, Plus, Shield, Clock, Trash2, Code, Search, FileText,
-  Calculator, Loader2, Terminal, Database
+  Plus, Shield, Clock, Trash2, Code, Search,
+  Calculator, Loader2, Database
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -108,8 +108,8 @@ export const Tools = () => {
     <div className="max-w-5xl mx-auto sy-animate-in" data-testid="tools-page">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-white">Tools</h1>
-          <p className="text-sm text-white/50">
+          <h1 className="text-xl font-semibold text-[var(--sy-text-primary)]">Tools</h1>
+          <p className="text-sm text-[var(--sy-text-tertiary)]">
             {enabledCount} of {tools.length} tools active
           </p>
         </div>
@@ -123,12 +123,12 @@ export const Tools = () => {
       </div>
 
       <div className="card-base overflow-hidden">
-        <div className="p-4 border-b border-[rgba(48,54,61,0.8)] flex items-center gap-2">
+        <div className="p-4 border-b border-[var(--sy-border-default)] flex items-center gap-2">
           <Shield className="w-4 h-4 text-amber-400" />
-          <span className="text-sm text-white/70">Tool permissions affect agent capabilities during task execution</span>
+          <span className="text-sm text-[var(--sy-text-secondary)]">Tool permissions affect agent capabilities during task execution</span>
         </div>
 
-        <div className="divide-y divide-[rgba(48,54,61,0.5)]">
+        <div className="divide-y divide-[var(--sy-border-subtle)]">
           {tools.map((tool) => {
             const catConfig = CATEGORY_CONFIG[tool.category] || CATEGORY_CONFIG.utility;
             const Icon = catConfig.icon;
@@ -139,17 +139,17 @@ export const Tools = () => {
                     <Icon className={`w-5 h-5 ${catConfig.color}`} />
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-white">{tool.name}</div>
-                    <div className="text-xs text-white/50">{tool.description}</div>
+                    <div className="text-sm font-medium text-[var(--sy-text-primary)]">{tool.name}</div>
+                    <div className="text-xs text-[var(--sy-text-tertiary)]">{tool.description}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 text-xs text-white/40">
+                  <div className="flex items-center gap-2 text-xs text-[var(--sy-text-muted)]">
                     <span className={`px-2 py-0.5 rounded text-[10px] ${catConfig.bg} ${catConfig.color}`}>
                       {tool.category}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-white/40">
+                  <div className="flex items-center gap-2 text-xs text-[var(--sy-text-muted)]">
                     <Clock className="w-3.5 h-3.5" />
                     {tool.invocation_count > 0
                       ? `${tool.invocation_count} invocations`
@@ -158,7 +158,7 @@ export const Tools = () => {
                   </div>
                   <button
                     onClick={() => deleteTool(tool.id)}
-                    className="opacity-0 group-hover:opacity-100 text-white/30 hover:text-[var(--sy-error)] transition-all"
+                    className="opacity-0 group-hover:opacity-100 text-[var(--sy-text-muted)] hover:text-[var(--sy-error)] transition-all"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -205,10 +205,10 @@ export const Tools = () => {
             <div>
               <label className="sy-label block mb-2">Category</label>
               <Select value={newCategory} onValueChange={setNewCategory}>
-                <SelectTrigger className="bg-[#0d1117] border-[rgba(48,54,61,0.8)] text-white">
+                <SelectTrigger className="bg-[var(--sy-surface)] border-[var(--sy-border-default)] text-[var(--sy-text-primary)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#161b22] border-[rgba(48,54,61,0.8)]">
+                <SelectContent className="bg-[var(--sy-elevated)] border-[var(--sy-border-default)]">
                   <SelectItem value="code">Code</SelectItem>
                   <SelectItem value="search">Search</SelectItem>
                   <SelectItem value="data">Data</SelectItem>

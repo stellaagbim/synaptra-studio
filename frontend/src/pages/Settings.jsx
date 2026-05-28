@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useApp } from "@/App";
-import { Settings as SettingsIcon, Cpu, Database, Palette, Shield, Loader2, CheckCircle2 } from "lucide-react";
+import { Cpu, Database, Palette, Shield, Loader2, CheckCircle2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -65,8 +65,8 @@ export const Settings = () => {
   return (
     <div className="max-w-3xl mx-auto sy-animate-in" data-testid="settings-page">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-white">Settings</h1>
-        <p className="text-sm text-white/50">Configure Synaptra Studio preferences</p>
+        <h1 className="text-xl font-semibold text-[var(--sy-text-primary)]">Settings</h1>
+        <p className="text-sm text-[var(--sy-text-tertiary)]">Configure Synaptra Studio preferences</p>
       </div>
 
       <div className="space-y-6">
@@ -77,14 +77,14 @@ export const Settings = () => {
               <Cpu className="w-5 h-5 text-purple-400" />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-white">Model Configuration</h3>
-              <p className="text-xs text-white/50">Select default AI provider and model</p>
+              <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Model Configuration</h3>
+              <p className="text-xs text-[var(--sy-text-tertiary)]">Select default AI provider and model</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-white/50 mb-1.5 block">Provider</label>
+              <label className="text-xs text-[var(--sy-text-tertiary)] mb-1.5 block">Provider</label>
               <Select
                 value={localSettings.default_provider}
                 onValueChange={(val) => {
@@ -96,16 +96,16 @@ export const Settings = () => {
                   }
                 }}
               >
-                <SelectTrigger className="bg-[#0d1117] border-[rgba(48,54,61,0.8)] text-white">
+                <SelectTrigger className="bg-[var(--sy-surface)] border-[var(--sy-border-default)] text-[var(--sy-text-primary)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#161b22] border-[rgba(48,54,61,0.8)]">
+                <SelectContent className="bg-[var(--sy-elevated)] border-[var(--sy-border-default)]">
                   {providers.map(p => (
                     <SelectItem key={p.id} value={p.id} disabled={!p.available}>
                       <span className="flex items-center gap-2">
                         {p.name}
                         {!p.available && (
-                          <span className="text-[10px] text-white/30 ml-1">no key</span>
+                          <span className="text-[10px] text-[var(--sy-text-muted)] ml-1">no key</span>
                         )}
                         {p.available && (
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
@@ -117,15 +117,15 @@ export const Settings = () => {
               </Select>
             </div>
             <div>
-              <label className="text-xs text-white/50 mb-1.5 block">Model</label>
+              <label className="text-xs text-[var(--sy-text-tertiary)] mb-1.5 block">Model</label>
               <Select
                 value={localSettings.default_model}
                 onValueChange={(val) => update("default_model", val)}
               >
-                <SelectTrigger className="bg-[#0d1117] border-[rgba(48,54,61,0.8)] text-white">
+                <SelectTrigger className="bg-[var(--sy-surface)] border-[var(--sy-border-default)] text-[var(--sy-text-primary)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#161b22] border-[rgba(48,54,61,0.8)]">
+                <SelectContent className="bg-[var(--sy-elevated)] border-[var(--sy-border-default)]">
                   {availableModels.map(m => (
                     <SelectItem key={m.id} value={m.id}>
                       {m.name}
@@ -137,8 +137,8 @@ export const Settings = () => {
           </div>
 
           {/* Provider Status */}
-          <div className="mt-4 pt-4 border-t border-[rgba(48,54,61,0.4)]">
-            <div className="text-xs text-white/40 mb-2">Provider Status</div>
+          <div className="mt-4 pt-4 border-t border-[var(--sy-border-subtle)]">
+            <div className="text-xs text-[var(--sy-text-muted)] mb-2">Provider Status</div>
             <div className="flex flex-wrap gap-3">
               {providers.map(p => (
                 <div
@@ -146,10 +146,10 @@ export const Settings = () => {
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs border ${
                     p.available
                       ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-400'
-                      : 'border-[rgba(48,54,61,0.6)] bg-transparent text-white/30'
+                      : 'border-[var(--sy-border-default)] bg-transparent text-[var(--sy-text-muted)]'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${p.available ? 'bg-emerald-400' : 'bg-white/20'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full ${p.available ? 'bg-emerald-400' : 'bg-[var(--sy-border-strong)]'}`} />
                   {p.name}
                 </div>
               ))}
@@ -164,16 +164,16 @@ export const Settings = () => {
               <Database className="w-5 h-5 text-cyan-400" />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-white">Storage</h3>
-              <p className="text-xs text-white/50">Database and persistence settings</p>
+              <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Storage</h3>
+              <p className="text-xs text-[var(--sy-text-tertiary)]">Database and persistence settings</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm text-white">Enable task persistence</div>
-                <div className="text-xs text-white/40">Store all task runs in database</div>
+                <div className="text-sm text-[var(--sy-text-primary)]">Enable task persistence</div>
+                <div className="text-xs text-[var(--sy-text-muted)]">Store all task runs in database</div>
               </div>
               <Switch
                 checked={localSettings.enable_persistence}
@@ -182,8 +182,8 @@ export const Settings = () => {
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm text-white">Enable memory</div>
-                <div className="text-xs text-white/40">RAG memory and semantic search</div>
+                <div className="text-sm text-[var(--sy-text-primary)]">Enable memory</div>
+                <div className="text-xs text-[var(--sy-text-muted)]">RAG memory and semantic search</div>
               </div>
               <Switch
                 checked={localSettings.enable_memory}
@@ -192,8 +192,8 @@ export const Settings = () => {
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm text-white">Store artifacts</div>
-                <div className="text-xs text-white/40">Save generated files and exports</div>
+                <div className="text-sm text-[var(--sy-text-primary)]">Store artifacts</div>
+                <div className="text-xs text-[var(--sy-text-muted)]">Save generated files and exports</div>
               </div>
               <Switch
                 checked={localSettings.enable_artifacts}
@@ -210,16 +210,16 @@ export const Settings = () => {
               <Palette className="w-5 h-5 text-teal-400" />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-white">Appearance</h3>
-              <p className="text-xs text-white/50">Visual preferences</p>
+              <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Appearance</h3>
+              <p className="text-xs text-[var(--sy-text-tertiary)]">Visual preferences</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm text-white">Reduced motion</div>
-                <div className="text-xs text-white/40">Minimize animations</div>
+                <div className="text-sm text-[var(--sy-text-primary)]">Reduced motion</div>
+                <div className="text-xs text-[var(--sy-text-muted)]">Minimize animations</div>
               </div>
               <Switch
                 checked={localSettings.reduced_motion}
@@ -236,19 +236,19 @@ export const Settings = () => {
               <Shield className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-white">Safety Controls</h3>
-              <p className="text-xs text-white/50">Agent execution boundaries</p>
+              <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Safety Controls</h3>
+              <p className="text-xs text-[var(--sy-text-tertiary)]">Agent execution boundaries</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-white/50 mb-1.5 block">Max input size (characters)</label>
+              <label className="text-xs text-[var(--sy-text-tertiary)] mb-1.5 block">Max input size (characters)</label>
               <Input
                 type="number"
                 value={localSettings.max_input_size}
                 onChange={(e) => update("max_input_size", parseInt(e.target.value) || 50000)}
-                className="bg-[#0d1117] border-[rgba(48,54,61,0.8)] text-white w-48"
+                className="bg-[var(--sy-surface)] border-[var(--sy-border-default)] text-[var(--sy-text-primary)] w-48"
               />
             </div>
           </div>
