@@ -129,7 +129,7 @@ export const Automations = () => {
   }
 
   return (
-    <div className="h-full flex flex-col sy-animate-in" data-testid="automations-page">
+    <div className="flex flex-col sy-animate-in" data-testid="automations-page">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>

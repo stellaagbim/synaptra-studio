@@ -219,9 +219,9 @@ export const TaskRunner = () => {
   const hasMetrics = activeTask && activeTask.evaluation && activeTask.evaluation.overall_score > 0;
 
   return (
-    <div className="h-full flex sy-gap-section sy-animate-in" data-testid="task-runner-page">
+    <div className="flex flex-col lg:flex-row sy-gap-section sy-animate-in" data-testid="task-runner-page">
       {/* Left Panel - Task List */}
-      <div className="w-[260px] flex-shrink-0 sy-panel-solid flex flex-col">
+      <div className="w-full lg:w-[260px] lg:flex-shrink-0 sy-panel-solid flex flex-col">
         <div className="sy-panel-header">
           <div>
             <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Task Queue</h3>
@@ -253,7 +253,7 @@ export const TaskRunner = () => {
           </Select>
         </div>
 
-        <ScrollArea className="flex-1 p-2">
+        <div className="max-h-[70vh] overflow-y-auto p-2">
           {tasks.length === 0 ? (
             <div className="text-center py-12 text-[var(--sy-text-muted)] text-sm">
               <FileText className="w-8 h-8 mx-auto mb-3 opacity-40" />
@@ -284,7 +284,7 @@ export const TaskRunner = () => {
               })}
             </div>
           )}
-        </ScrollArea>
+        </div>
       </div>
 
       {/* Center Panel - Main Workspace */}
@@ -394,7 +394,7 @@ export const TaskRunner = () => {
               </div>
             </div>
 
-            <ScrollArea className="flex-1 p-5">
+            <div className="p-5 max-h-[70vh] overflow-y-auto">
               <div className="sy-pipeline">
                 {PIPELINE_STAGES.map((stage, idx) => {
                   const stepData = getStepData(idx);
@@ -423,7 +423,7 @@ export const TaskRunner = () => {
                   );
                 })}
               </div>
-            </ScrollArea>
+            </div>
           </div>
         )}
 
@@ -471,7 +471,7 @@ export const TaskRunner = () => {
             </button>
           </div>
 
-          <ScrollArea className="flex-1 p-5">
+          <div className="p-5 max-h-[70vh] overflow-y-auto">
             {centerTab === "output" ? (
               <>
                 {activeTask?.status === 'failed' ? (
@@ -515,18 +515,18 @@ export const TaskRunner = () => {
                 )}
               </>
             )}
-          </ScrollArea>
+          </div>
         </div>
         )}
       </div>
 
       {/* Right Panel - Metrics */}
-      <div className="w-[280px] flex-shrink-0 sy-panel-solid flex flex-col overflow-hidden">
+      <div className="w-full lg:w-[280px] lg:flex-shrink-0 sy-panel-solid flex flex-col self-start">
         <div className="sy-panel-header">
           <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Metrics</h3>
         </div>
 
-        <ScrollArea className="flex-1 p-4">
+        <div className="p-4">
           <div className="space-y-6">
             {/* Evaluation Scores */}
             <div>
@@ -665,7 +665,7 @@ export const TaskRunner = () => {
               </div>
             )}
           </div>
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );

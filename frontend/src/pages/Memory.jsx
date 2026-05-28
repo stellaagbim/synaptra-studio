@@ -148,7 +148,7 @@ export const Memory = () => {
     : "\u2014";
 
   return (
-    <div className="h-full flex flex-col sy-animate-in" data-testid="memory-page">
+    <div className="flex flex-col sy-animate-in" data-testid="memory-page">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -247,18 +247,16 @@ export const Memory = () => {
             </p>
           </div>
         ) : (
-          <ScrollArea className="h-full">
-            <div className="space-y-3 pb-4">
-              {filteredItems.map((item) => (
-                <MemoryItemCard
-                  key={item.id}
-                  item={item}
-                  similarity={item._similarity}
-                  onDelete={handleDelete}
-                />
-              ))}
-            </div>
-          </ScrollArea>
+          <div className="space-y-3 pb-4">
+            {filteredItems.map((item) => (
+              <MemoryItemCard
+                key={item.id}
+                item={item}
+                similarity={item._similarity}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>

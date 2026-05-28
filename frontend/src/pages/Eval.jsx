@@ -219,7 +219,7 @@ export const Eval = () => {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-[var(--sy-primary)] mx-auto mb-4" />
           <p className="text-sm text-[var(--sy-text-muted)]">Loading evaluation data...</p>
@@ -229,9 +229,9 @@ export const Eval = () => {
   }
 
   return (
-    <div className="h-full flex sy-gap-section sy-animate-in" data-testid="eval-page">
+    <div className="flex flex-col lg:flex-row sy-gap-section sy-animate-in" data-testid="eval-page">
       {/* Left Panel - Suites */}
-      <div className="w-[280px] flex-shrink-0 sy-panel-solid flex flex-col">
+      <div className="w-full lg:w-[280px] lg:flex-shrink-0 sy-panel-solid flex flex-col">
         <div className="sy-panel-header">
           <div>
             <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Evaluation Suites</h3>
@@ -644,7 +644,7 @@ export const Eval = () => {
       </div>
 
       {/* Right Panel - Run History */}
-      <div className="w-[260px] flex-shrink-0 sy-panel-solid flex flex-col overflow-hidden">
+      <div className="w-full lg:w-[360px] lg:flex-shrink-0 sy-panel-solid flex flex-col self-start">
         <div className="sy-panel-header">
           <div>
             <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Run History</h3>
@@ -652,7 +652,7 @@ export const Eval = () => {
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-3">
+        <div className="p-3 max-h-[70vh] overflow-y-auto">
           {runs.length === 0 ? (
             <div className="text-center py-12 text-[var(--sy-text-muted)]">
               <BarChart3 className="w-8 h-8 mx-auto mb-3 opacity-30" strokeWidth={1} />
@@ -670,9 +670,9 @@ export const Eval = () => {
                     onClick={() => { setSelectedRun(run); setSelectedSuite(null); setShowComparison(false); }}
                     data-testid={`run-${run.id}`}
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm text-[var(--sy-text-secondary)]">{run.suite_name}</span>
-                      <span className={`sy-data text-sm sy-text-${getScoreColor(score)}`}>
+                    <div className="flex items-start justify-between gap-3 mb-1">
+                      <span className="text-sm text-[var(--sy-text-secondary)] leading-snug">{run.suite_name}</span>
+                      <span className={`sy-data text-sm sy-text-${getScoreColor(score)} flex-shrink-0`}>
                         {score?.toFixed(1) || '—'}
                       </span>
                     </div>
@@ -692,7 +692,7 @@ export const Eval = () => {
               })}
             </div>
           )}
-        </ScrollArea>
+        </div>
       </div>
 
       {/* Create Suite Dialog */}

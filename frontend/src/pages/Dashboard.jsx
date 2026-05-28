@@ -78,7 +78,7 @@ const Dashboard = () => {
   const isOnline = systemStatus?.status === "operational";
   
   return (
-    <div className="h-full flex sy-gap-section sy-animate-in" data-testid="dashboard-page">
+    <div className="flex flex-col lg:flex-row sy-gap-section sy-animate-in" data-testid="dashboard-page">
       {/* Main Content */}
       <div className="flex-1 flex flex-col sy-gap-section min-w-0">
         {/* Hero Section */}
@@ -168,7 +168,7 @@ const Dashboard = () => {
       </div>
       
       {/* Right Panel - Recent Activity */}
-      <div className="w-[340px] flex-shrink-0 sy-panel-solid flex flex-col overflow-hidden">
+      <div className="w-full lg:w-[340px] lg:flex-shrink-0 sy-panel-solid flex flex-col">
         <div className="sy-panel-header">
           <div>
             <h3 className="text-sm font-medium text-[var(--sy-text-primary)]">Recent Executions</h3>

@@ -11,6 +11,81 @@
 
 @layer base {
     :root {
+        /* Shadcn Base - Light */
+        --background: 0 0% 100%;
+        --foreground: 240 10% 4%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 4%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 4%;
+        --primary: 217 91% 55%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 240 5% 96%;
+        --secondary-foreground: 240 6% 10%;
+        --muted: 240 5% 96%;
+        --muted-foreground: 240 4% 46%;
+        --accent: 38 92% 50%;
+        --accent-foreground: 0 0% 0%;
+        --destructive: 0 84% 55%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 6% 90%;
+        --input: 240 6% 90%;
+        --ring: 217 91% 55%;
+        --radius: 0.625rem;
+
+        /* Synaptra Core - Light Surfaces */
+        --sy-void: #f7f7f8;
+        --sy-obsidian: #ffffff;
+        --sy-surface: #ffffff;
+        --sy-elevated: #fafafa;
+        --sy-raised: #f4f4f5;
+
+        /* Borders */
+        --sy-border-void: rgba(0, 0, 0, 0.04);
+        --sy-border-subtle: rgba(0, 0, 0, 0.06);
+        --sy-border-default: rgba(0, 0, 0, 0.10);
+        --sy-border-strong: rgba(0, 0, 0, 0.15);
+        --sy-border-active: rgba(59, 130, 246, 0.55);
+
+        /* Glass */
+        --sy-glass-bg: rgba(255, 255, 255, 0.7);
+        --sy-glass-border: rgba(0, 0, 0, 0.06);
+        --sy-glass-blur: 16px;
+
+        /* Primary - Precision Blue */
+        --sy-primary: #2563eb;
+        --sy-primary-dim: #1d4ed8;
+        --sy-primary-glow: rgba(37, 99, 235, 0.15);
+        --sy-primary-subtle: rgba(37, 99, 235, 0.08);
+
+        /* Accent - Industrial Amber */
+        --sy-amber: #d97706;
+        --sy-amber-glow: rgba(217, 119, 6, 0.15);
+        --sy-amber-subtle: rgba(217, 119, 6, 0.08);
+
+        /* Status */
+        --sy-success: #059669;
+        --sy-success-glow: rgba(5, 150, 105, 0.15);
+        --sy-warning: #d97706;
+        --sy-error: #dc2626;
+        --sy-error-glow: rgba(220, 38, 38, 0.15);
+        --sy-info: #2563eb;
+
+        /* Text Hierarchy */
+        --sy-text-primary: #0a0a0a;
+        --sy-text-secondary: #404040;
+        --sy-text-tertiary: #6b7280;
+        --sy-text-muted: #9ca3af;
+        --sy-text-void: #d1d5db;
+
+        /* Shadows */
+        --sy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+        --sy-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.08);
+        --sy-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+        --sy-shadow-glow: 0 0 30px -8px var(--sy-primary);
+    }
+
+    .dark {
         /* Shadcn Base - Dark Obsidian */
         --background: 0 0% 2%;
         --foreground: 0 0% 98%;
@@ -31,7 +106,6 @@
         --border: 240 4% 16%;
         --input: 240 4% 16%;
         --ring: 217 91% 60%;
-        --radius: 0.625rem;
 
         /* Synaptra Core - Deep Obsidian Void */
         --sy-void: #030303;
@@ -39,50 +113,48 @@
         --sy-surface: #0a0a0a;
         --sy-elevated: #0f0f0f;
         --sy-raised: #141414;
-        
-        /* Borders - Subtle definition */
+
+        /* Borders */
         --sy-border-void: rgba(255, 255, 255, 0.04);
         --sy-border-subtle: rgba(255, 255, 255, 0.06);
         --sy-border-default: rgba(255, 255, 255, 0.08);
         --sy-border-strong: rgba(255, 255, 255, 0.12);
         --sy-border-active: rgba(59, 130, 246, 0.5);
-        
-        /* Glass - Premium Technical */
+
+        /* Glass */
         --sy-glass-bg: rgba(10, 10, 10, 0.7);
         --sy-glass-border: rgba(255, 255, 255, 0.06);
-        --sy-glass-blur: 16px;
-        
+
         /* Primary - Precision Blue */
         --sy-primary: #3b82f6;
         --sy-primary-dim: #2563eb;
         --sy-primary-glow: rgba(59, 130, 246, 0.15);
         --sy-primary-subtle: rgba(59, 130, 246, 0.08);
-        
-        /* Accent - Industrial Amber (Active/Running states) */
+
+        /* Accent - Industrial Amber */
         --sy-amber: #f59e0b;
         --sy-amber-glow: rgba(245, 158, 11, 0.15);
         --sy-amber-subtle: rgba(245, 158, 11, 0.08);
-        
-        /* Status Colors */
+
+        /* Status */
         --sy-success: #10b981;
         --sy-success-glow: rgba(16, 185, 129, 0.15);
         --sy-warning: #f59e0b;
         --sy-error: #ef4444;
         --sy-error-glow: rgba(239, 68, 68, 0.15);
         --sy-info: #3b82f6;
-        
+
         /* Text Hierarchy */
         --sy-text-primary: #fafafa;
         --sy-text-secondary: #a1a1aa;
         --sy-text-tertiary: #71717a;
         --sy-text-muted: #52525b;
         --sy-text-void: #3f3f46;
-        
-        /* Shadows - Cinematic depth */
+
+        /* Shadows */
         --sy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
         --sy-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
         --sy-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
-        --sy-shadow-glow: 0 0 30px -8px var(--sy-primary);
     }
 }
 
@@ -92,8 +164,7 @@
     }
     
     html, body, #root {
-        height: 100%;
-        overflow: hidden;
+        min-height: 100%;
     }
     
     body {
@@ -214,12 +285,51 @@
        SIDEBAR - Mission Control Navigation
        ===================================== */
     .sy-sidebar {
-        width: 220px;
+        width: 240px;
         background: var(--sy-obsidian);
         border-right: 1px solid var(--sy-border-void);
         display: flex;
         flex-direction: column;
         flex-shrink: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+    }
+
+    .sy-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sy-sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 45;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+    }
+
+    .sy-sidebar-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    @media (min-width: 1024px) {
+        .sy-sidebar {
+            position: sticky;
+            transform: none;
+            align-self: flex-start;
+            z-index: 30;
+        }
+        .sy-sidebar-backdrop {
+            display: none;
+        }
     }
     
     .sy-sidebar-brand {
@@ -304,6 +414,9 @@
         justify-content: space-between;
         background: var(--sy-obsidian);
         flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        z-index: 40;
     }
     
     .sy-header-title {
@@ -796,21 +909,31 @@
        SCROLLBAR - Minimal
        ===================================== */
     ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 12px;
+        height: 12px;
     }
-    
+
     ::-webkit-scrollbar-track {
-        background: transparent;
+        background: var(--sy-border-void);
     }
-    
+
     ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 3px;
+        background: var(--sy-border-strong);
+        border-radius: 6px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
     }
-    
+
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.12);
+        background: var(--sy-text-tertiary);
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+
+    /* Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--sy-border-strong) var(--sy-border-void);
     }
 
     /* =====================================

@@ -37,14 +37,20 @@ const navSections = [
   }
 ];
 
-const Sidebar = ({ systemStatus }) => {
+const Sidebar = ({ systemStatus, isOpen, onClose }) => {
   const location = useLocation();
-  
+
   const isOnline = systemStatus?.status === "operational";
   const aiReady = systemStatus?.ai_engine === "ready";
-  
+
   return (
-    <div className="sy-sidebar" data-testid="sidebar">
+    <>
+      <div
+        className={`sy-sidebar-backdrop ${isOpen ? 'show' : ''}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+    <div className={`sy-sidebar ${isOpen ? 'open' : ''}`} data-testid="sidebar">
       {/* Brand */}
       <div className="sy-sidebar-brand">
         <div className="flex items-center gap-3">
@@ -74,6 +80,7 @@ const Sidebar = ({ systemStatus }) => {
                   key={item.path}
                   to={item.path}
                   className={`sy-nav-item ${isActive ? 'active' : ''}`}
+                  onClick={onClose}
                   data-testid={`nav-${item.label.toLowerCase().replace(' ', '-')}`}
                 >
                   <item.icon className="sy-nav-icon" />
@@ -112,6 +119,7 @@ const Sidebar = ({ systemStatus }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

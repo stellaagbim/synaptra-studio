@@ -98,7 +98,7 @@ export const Tools = () => {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="w-6 h-6 animate-spin text-[var(--sy-primary)]" />
       </div>
     );

@@ -7,6 +7,7 @@ import { Toaster, toast } from "sonner";
 // Layout
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
+import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
 
 // Pages
 import Dashboard from "@/pages/Dashboard";
@@ -28,7 +29,9 @@ export const useApp = () => {
 };
 
 function AppContent() {
+  const { theme } = useTheme();
   const [systemStatus, setSystemStatus] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [settings, setSettings] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -185,10 +188,10 @@ function AppContent() {
 
   return (
     <AppContext.Provider value={contextValue}>
-      <div className="h-screen w-screen flex overflow-hidden" style={{ background: 'var(--sy-void)' }} data-testid="synaptra-app">
-        <Toaster 
-          position="top-right" 
-          theme="dark" 
+      <div className="min-h-screen w-full flex" style={{ background: 'var(--sy-void)' }} data-testid="synaptra-app">
+        <Toaster
+          position="top-right"
+          theme={theme}
           toastOptions={{
             style: {
               background: 'var(--sy-elevated)',
@@ -198,11 +201,19 @@ function AppContent() {
             },
           }}
         />
-        <Sidebar systemStatus={systemStatus} currentPath={location.pathname} />
+        <Sidebar
+          systemStatus={systemStatus}
+          currentPath={location.pathname}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
         <div className="flex-1 flex flex-col min-w-0">
-          <Header title={pageTitles[location.pathname] || 'Synaptra'} />
-          <main className="flex-1 overflow-auto p-6" style={{ background: 'var(--sy-void)' }}>
-            <div className="h-full">
+          <Header
+            title={pageTitles[location.pathname] || 'Synaptra'}
+            onMenuClick={() => setSidebarOpen(true)}
+          />
+          <main className="flex-1 p-4 lg:p-6" style={{ background: 'var(--sy-void)' }}>
+            <div>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/task-runner" element={<TaskRunner />} />
@@ -223,8 +234,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <ThemeProvider defaultTheme="system">
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

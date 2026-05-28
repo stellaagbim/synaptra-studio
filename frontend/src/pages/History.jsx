@@ -65,7 +65,7 @@ export const History = () => {
   };
 
   return (
-    <div className="h-full flex flex-col sy-animate-in" data-testid="history-page">
+    <div className="flex flex-col sy-animate-in" data-testid="history-page">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-semibold text-white">History</h1>
