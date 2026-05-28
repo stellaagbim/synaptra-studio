@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Select,
   SelectContent,
@@ -482,7 +484,9 @@ export const TaskRunner = () => {
                   </div>
                 ) : hasOutput ? (
                   <div className="sy-output sy-animate-slide" data-testid="task-output">
-                    {activeTask.output}
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {activeTask.output}
+                    </ReactMarkdown>
                   </div>
                 ) : (
                   <div className="text-center py-16 text-[var(--sy-text-muted)]">
