@@ -33,11 +33,11 @@ Real-time observability into the six-stage execution pipeline with per-step timi
   <img src="docs/screenshots/task-pipeline.jpeg" alt="Task Execution Pipeline" width="100%">
 </p>
 
-### AI Reasoning Traces
-Full transparency into the agent's decision-making process — every reasoning step is logged with phase, action, confidence, and duration.
+### Rich Markdown Output
+Model responses are rendered as formatted markdown with headings, lists, code blocks, and emphasis — substantive output styled for readability in both light and dark themes.
 
 <p align="center">
-  <img src="docs/screenshots/reasoning-traces.jpeg" alt="Reasoning Traces" width="100%">
+  <img src="docs/screenshots/reasoning-traces.jpeg" alt="Rich Markdown Output" width="100%">
 </p>
 
 ### Evaluation Metrics
@@ -66,6 +66,20 @@ Persistent memory store with typed entries (Context, Summary, Artifact, Referenc
 
 <p align="center">
   <img src="docs/screenshots/memory.jpeg" alt="Semantic Memory" width="100%">
+</p>
+
+### Tool Registry
+Toggleable capability registry — Code Executor, Web Search, File Reader, Calculator — that gates which actions the agent can invoke during task execution.
+
+<p align="center">
+  <img src="docs/screenshots/tools.jpeg" alt="Tool Registry" width="100%">
+</p>
+
+### Execution History
+Complete audit ledger of every task run with input, type, provider, score, and timestamp — fully searchable and filterable.
+
+<p align="center">
+  <img src="docs/screenshots/history.jpeg" alt="Execution History" width="100%">
 </p>
 
 ---
