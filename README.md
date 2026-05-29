@@ -327,25 +327,6 @@ Quality and relevance are weighted highest because they reflect what most users 
 
 ---
 
-## Roadmap
-
-**Shipped**
-- Multi-provider AI (OpenAI, Anthropic, Gemini) via LiteLLM
-- Workflow automations with manual and scheduled triggers
-- Vector memory with configurable similarity threshold
-- Side-by-side model comparison
-- Light / dark / system theming
-- Mobile-responsive layout
-
-**Planned**
-- Visual workflow designer (drag-and-drop multi-step pipelines)
-- Trajectory fidelity metrics for multi-step planning
-- Runtime tool integration (web search, code execution, file I/O)
-- Multi-provider benchmarking in a single eval run
-- PDF/Markdown report export for eval results and task histories
-
----
-
 ## Author
 
 **Stella Agbim** ([@stellaagbim](https://github.com/stellaagbim))
