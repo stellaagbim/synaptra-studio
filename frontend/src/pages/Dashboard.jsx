@@ -72,7 +72,7 @@ const Dashboard = () => {
   const completedTasks = tasks.filter(t => t.status === 'completed');
   const avgScore = completedTasks.length > 0
     ? (completedTasks.reduce((acc, t) => acc + (t.evaluation?.overall_score || 0), 0) / completedTasks.length).toFixed(1)
-    : '—';
+    : '-';
   
   const recentTasks = tasks.slice(0, 5);
   const isOnline = systemStatus?.status === "operational";
@@ -209,7 +209,7 @@ const Dashboard = () => {
                       task.evaluation?.overall_score >= 60 ? 'text-[var(--sy-warning)]' :
                       'text-[var(--sy-text-muted)]'
                     }`}>
-                      {task.evaluation?.overall_score?.toFixed(1) || '—'}
+                      {task.evaluation?.overall_score?.toFixed(1) || '-'}
                     </span>
                   </div>
                   <p className="text-xs text-[var(--sy-text-secondary)] line-clamp-2 leading-relaxed">

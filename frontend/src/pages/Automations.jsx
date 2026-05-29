@@ -106,7 +106,7 @@ export const Automations = () => {
     try {
       const { data: task } = await axios.post(`${API}/automations/${automation.id}/run`);
       toast.success(`Automation completed`, {
-        description: `Score: ${task.evaluation?.overall_score?.toFixed(1) || "—"}`,
+        description: `Score: ${task.evaluation?.overall_score?.toFixed(1) || "-"}`,
       });
       fetchAutomations();
       if (task?.id) {

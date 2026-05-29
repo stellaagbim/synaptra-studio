@@ -120,7 +120,7 @@ function AppContent() {
       
       if (newTask.status === "completed") {
         toast.success("Task execution completed", {
-          description: `Overall score: ${newTask.evaluation?.overall_score?.toFixed(1) || '—'}`
+          description: `Overall score: ${newTask.evaluation?.overall_score?.toFixed(1) || '-'}`
         });
       } else if (newTask.status === "failed") {
         toast.error("Task execution failed", {

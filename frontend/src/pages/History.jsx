@@ -205,18 +205,18 @@ export const History = () => {
                     {task.id.slice(0, 8).toUpperCase()}
                   </div>
                   <div className="col-span-3 text-sm text-[var(--sy-text-secondary)] truncate">
-                    {task.input_text?.slice(0, 40) || '—'}
+                    {task.input_text?.slice(0, 40) || '-'}
                   </div>
                   <div className="col-span-2 flex items-center gap-2 text-sm text-[var(--sy-text-secondary)]">
                     <Icon className="w-4 h-4" />
                     {task.task_type?.replace(/_/g, ' ') || 'analysis'}
                   </div>
                   <div className="col-span-1 text-sm text-[var(--sy-text-tertiary)] capitalize">
-                    {task.metadata?.provider || '—'}
+                    {task.metadata?.provider || '-'}
                   </div>
                   <div className="col-span-1 text-sm font-mono">
                     <span className={task.evaluation?.overall_score >= 80 ? 'text-green-400' : task.evaluation?.overall_score >= 60 ? 'text-amber-400' : 'text-[var(--sy-text-tertiary)]'}>
-                      {task.evaluation?.overall_score?.toFixed(1) || '—'}
+                      {task.evaluation?.overall_score?.toFixed(1) || '-'}
                     </span>
                   </div>
                   <div className="col-span-2 text-sm text-[var(--sy-text-tertiary)]">

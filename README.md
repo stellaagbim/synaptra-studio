@@ -1,6 +1,6 @@
 # Synaptra Studio
 
-### Multimodal AI control console — task orchestration, evaluation, and persistent memory.
+### Multimodal AI control console for task orchestration, evaluation, and persistent memory.
 
 [![Author](https://img.shields.io/badge/Author-Stella%20Agbim-blue)](https://github.com/stellaagbim)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -8,7 +8,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11+-green.svg)](https://python.org)
 
-[**→ Live Demo (synaptra-studio.vercel.app)**](https://synaptra-studio.vercel.app)
+[**Live Demo: synaptra-studio.vercel.app**](https://synaptra-studio.vercel.app)
 
 <p align="center">
   <img src="docs/screenshots/dashboard.jpeg" alt="Synaptra Studio Dashboard" width="100%">
@@ -30,7 +30,7 @@ Real-time observability into the six-stage execution pipeline with per-step timi
 </p>
 
 ### Rich Markdown Output
-Model responses render as formatted markdown — headings, lists, code blocks, emphasis — styled for both light and dark themes.
+Model responses render as formatted markdown (headings, lists, code blocks, emphasis) styled for both light and dark themes.
 
 <p align="center">
   <img src="docs/screenshots/reasoning-traces.jpeg" alt="Rich Markdown Output" width="100%">
@@ -44,7 +44,7 @@ Aggregate scoring across five dimensions: Quality, Relevance, Efficiency, Plan A
 </p>
 
 ### Model Comparison
-Per-metric benchmark comparison across models and runs — pick the right model for the job from data, not vibes.
+Per-metric benchmark comparison across models and runs, so model selection comes from data instead of guesswork.
 
 <p align="center">
   <img src="docs/screenshots/model-comparison.jpeg" alt="Model Comparison" width="100%">
@@ -65,14 +65,14 @@ Persistent memory store with typed entries (Context, Summary, Artifact, Referenc
 </p>
 
 ### Tool Registry
-Toggleable capability registry — Code Executor, Web Search, File Reader, Calculator — that gates which actions the agent can invoke.
+Toggleable capability registry (Code Executor, Web Search, File Reader, Calculator) that gates which actions the agent can invoke.
 
 <p align="center">
   <img src="docs/screenshots/tools.jpeg" alt="Tool Registry" width="100%">
 </p>
 
 ### Execution History
-Complete audit ledger of every task run with input, type, provider, score, and timestamp — searchable and filterable.
+Complete audit ledger of every task run with input, type, provider, score, and timestamp. Fully searchable and filterable.
 
 <p align="center">
   <img src="docs/screenshots/history.jpeg" alt="Execution History" width="100%">
@@ -82,13 +82,13 @@ Complete audit ledger of every task run with input, type, provider, score, and t
 
 ## Features
 
-- **Multi-provider AI** — OpenAI (GPT-4o, GPT-4o-mini, o1), Anthropic (Claude Sonnet 4.5, Claude Haiku 4.5), Google Gemini, all swappable from Settings
+- **Multi-provider AI**: OpenAI (GPT-4o, GPT-4o-mini, o1), Anthropic (Claude Sonnet 4.5, Claude Haiku 4.5), Google Gemini, all swappable from Settings
 - **Six-stage execution pipeline** with per-stage timing and reasoning traces
 - **Five-metric evaluation** (Quality, Relevance, Efficiency, Plan Adherence, Coherence) with weighted composite scoring
 - **Vector memory** with semantic similarity retrieval and configurable thresholds
 - **Reproducible benchmarks** via Evaluation Suites with historical comparison and side-by-side model comparison
-- **Workflow automations** — reusable templates triggered manually or on a schedule
-- **Multimodal input** — text and vision in a single task pipeline
+- **Workflow automations**: reusable templates triggered manually or on a schedule
+- **Multimodal input**: text and vision in a single task pipeline
 - **Light / dark / system theming** with localStorage persistence
 - **Mobile-responsive layout** with a slide-in sidebar drawer
 
@@ -100,7 +100,7 @@ Complete audit ledger of every task run with input, type, provider, score, and t
 
 - Python 3.11+
 - Node.js 18+
-- MongoDB (local or Atlas) — see [§6 below](#mongodb)
+- MongoDB (local or Atlas). See the MongoDB section below.
 - At least one AI provider key (OpenAI, Anthropic, or Gemini)
 
 ### Backend
@@ -114,7 +114,7 @@ source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 cp .env.example .env
-# Edit .env — see "Environment Variables" below
+# Edit .env. See "Environment Variables" below.
 
 uvicorn server:app --reload --host 0.0.0.0 --port 8000
 ```
@@ -187,8 +187,8 @@ App at `http://localhost:3000`.
 
 1. UI submits `POST /api/tasks` with input text (and optional image)
 2. Backend creates a task record (`pending`), persists to MongoDB
-3. Pipeline runs: input reception → preprocessing → memory retrieval → AI analysis → evaluation → output
-4. Result + metrics + reasoning traces saved back to MongoDB
+3. Pipeline runs through input reception, preprocessing, memory retrieval, AI analysis, evaluation, and output generation
+4. Result, metrics, and reasoning traces saved back to MongoDB
 5. UI receives the completed task and renders the markdown output
 
 ---
@@ -234,9 +234,9 @@ winget install MongoDB.Server
 **Atlas (recommended for production):**
 
 1. Create a free M0 cluster at [cloud.mongodb.com](https://cloud.mongodb.com)
-2. **Database Access** → create user
-3. **Network Access** → add your IP (or `0.0.0.0/0` for hosted backends)
-4. **Connect → Drivers** → copy connection string into `MONGO_URL`
+2. **Database Access**, then create a user
+3. **Network Access**, then add your IP (or `0.0.0.0/0` for hosted backends)
+4. **Connect**, **Drivers**, then copy the connection string into `MONGO_URL`
 
 ---
 
@@ -247,15 +247,15 @@ This repo ships with `render.yaml` (backend) and `frontend/vercel.json` (fronten
 ### Backend on Render
 
 1. Push the repo to GitHub
-2. [Render Dashboard](https://dashboard.render.com) → **New → Blueprint** → connect repo
+2. [Render Dashboard](https://dashboard.render.com), then **New**, **Blueprint**, and connect the repo
 3. Render reads `render.yaml` and prompts for env vars (`MONGO_URL`, AI keys, `CORS_ORIGINS`)
-4. ⚠️ If using Atlas, add `0.0.0.0/0` to Network Access (Render IPs aren't fixed)
+4. If using Atlas, add `0.0.0.0/0` to Network Access (Render IPs are not fixed)
 
 ### Frontend on Vercel
 
-1. [vercel.com](https://vercel.com) → **Add New → Project** → import repo
+1. [vercel.com](https://vercel.com), then **Add New**, **Project**, then import the repo
 2. **Root Directory:** `frontend`
-3. Add env var: `REACT_APP_BACKEND_URL` = your Render URL
+3. Add env var: `REACT_APP_BACKEND_URL` set to your Render URL
 4. Deploy
 
 After both are live, update `CORS_ORIGINS` on Render to your Vercel URL.
@@ -298,11 +298,11 @@ Five metrics are computed per task:
 
 | Metric | What it measures |
 |---|---|
-| **Quality** | Structural completeness — presence of headings, lists, appropriate length |
+| **Quality** | Structural completeness, such as presence of headings, lists, appropriate length |
 | **Relevance** | Semantic alignment between input and output (token overlap) |
 | **Efficiency** | Inverse of processing time |
 | **Plan Adherence** | Pipeline stages completed vs. total |
-| **Coherence** | Linguistic structure — average sentence length within optimal bounds |
+| **Coherence** | Linguistic structure (average sentence length within optimal bounds) |
 
 Composite score:
 
@@ -311,7 +311,7 @@ overall = 0.30·quality + 0.25·relevance + 0.15·efficiency
         + 0.15·plan_adherence + 0.15·coherence
 ```
 
-Quality and relevance are weighted highest because they reflect what most users actually care about; efficiency and reliability metrics keep the score sensitive to execution health without dominating it.
+Quality and relevance are weighted highest because they reflect what most users actually care about. Efficiency and reliability metrics keep the score sensitive to execution health without dominating it.
 
 ---
 
@@ -320,10 +320,10 @@ Quality and relevance are weighted highest because they reflect what most users 
 | Symptom | Cause | Fix |
 |---|---|---|
 | Sidebar shows "AI Engine: not_configured" | No AI provider key in `.env` | Add at least one of `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY` |
-| Sidebar shows "Database: disconnected" | Mongo unreachable | Check `MONGO_URL`; if Atlas, verify Network Access allows your IP |
+| Sidebar shows "Database: disconnected" | Mongo unreachable | Check `MONGO_URL`. If using Atlas, verify Network Access allows your IP |
 | Frontend shows "Network Error" | Backend not running | Start uvicorn first |
-| `bad auth: authentication failed` from MongoDB | Wrong DB user/password | Update credentials in `MONGO_URL` or reset in Atlas → Database Access |
-| `DNS query name does not exist` for cluster | Atlas cluster was deleted/never existed | Recreate cluster, copy new connection string |
+| `bad auth: authentication failed` from MongoDB | Wrong DB user/password | Update credentials in `MONGO_URL` or reset in Atlas, Database Access |
+| `DNS query name does not exist` for cluster | Atlas cluster was deleted or never existed | Recreate cluster, copy new connection string |
 
 ---
 
@@ -348,8 +348,8 @@ Quality and relevance are weighted highest because they reflect what most users 
 
 ## Author
 
-**Stella Agbim** — [@stellaagbim](https://github.com/stellaagbim)
+**Stella Agbim** ([@stellaagbim](https://github.com/stellaagbim))
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

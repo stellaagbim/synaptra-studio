@@ -25,7 +25,7 @@ const ThemeToggle = () => {
         color: "var(--sy-text-secondary)",
       }}
       aria-label={`Theme: ${labels[theme]}. Click to switch to ${labels[next]}.`}
-      title={`Theme: ${labels[theme]} — click for ${labels[next]}`}
+      title={`Theme: ${labels[theme]}. Click for ${labels[next]}.`}
       data-testid="theme-toggle"
     >
       <Icon theme={theme} />

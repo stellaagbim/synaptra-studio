@@ -303,11 +303,11 @@ class AIAnalysisEngine:
     def _get_system_prompt(self, task_type: TaskType) -> str:
         common = (
             "Answer the user's actual question directly and substantively. "
-            "Be specific, concrete, and grounded — cite exact terms, numbers, and examples from the input "
+            "Be specific, concrete, and grounded - cite exact terms, numbers, and examples from the input "
             "rather than abstract platitudes. Skip filler like 'In conclusion' or 'It is important to note'. "
             "Use markdown headings and lists only when they genuinely aid comprehension; prose is often better. "
             "If something is ambiguous, name the ambiguity instead of hedging. "
-            "If the input is short or simple, the answer should be short or simple — do not pad."
+            "If the input is short or simple, the answer should be short or simple - do not pad."
         )
 
         prompts = {
@@ -333,7 +333,7 @@ class AIAnalysisEngine:
             ),
 
             TaskType.IMAGE_ANALYSIS: (
-                "You are analyzing an image. Describe what you actually see — concrete objects, text, spatial "
+                "You are analyzing an image. Describe what you actually see - concrete objects, text, spatial "
                 "relationships, anything unusual or contextually significant. Skip generic descriptions that "
                 "could apply to any image. If text is present, transcribe it verbatim. " + common
             ),
@@ -638,7 +638,7 @@ class ToolExecutor:
 
     def route_tools(self, task: Task) -> List[str]:
         """Heuristic router: determines which tools should run based on input analysis.
-        Returns a list of tool keys to execute. No LLM calls — pure pattern matching."""
+        Returns a list of tool keys to execute. No LLM calls - pure pattern matching."""
         selected = []
         text = task.input_text.lower()
 
@@ -815,8 +815,8 @@ class ToolExecutor:
         result_parts = [
             "Code Structure Analysis:",
             f"  Total lines: {total_lines} (code: {len(code_lines)}, blank: {len(blank_lines)}, comments: {len(comment_lines)})",
-            f"  Functions found: {len(functions)}" + (f" — {', '.join(functions[:8])}" if functions else ""),
-            f"  Classes found: {len(classes)}" + (f" — {', '.join(classes[:5])}" if classes else ""),
+            f"  Functions found: {len(functions)}" + (f" - {', '.join(functions[:8])}" if functions else ""),
+            f"  Classes found: {len(classes)}" + (f" - {', '.join(classes[:5])}" if classes else ""),
             f"  Import statements: {len(imports)}",
             f"  Branch points: {branches} (estimated cyclomatic complexity: {branches + 1})",
             f"  Max nesting depth: {nesting_max} levels",
@@ -1136,7 +1136,7 @@ class TaskOrchestrator:
     def _detect_task_type(self, input_text: str, has_image: bool) -> tuple:
         """Returns (TaskType, reasoning_str, matched_indicators, confidence)."""
         if has_image:
-            return (TaskType.IMAGE_ANALYSIS, "Image attachment detected — routing to vision pipeline",
+            return (TaskType.IMAGE_ANALYSIS, "Image attachment detected - routing to vision pipeline",
                     ["image_present"], 0.98)
 
         text_lower = input_text.lower()
@@ -1145,7 +1145,7 @@ class TaskOrchestrator:
         code_matches = [i.strip() for i in code_indicators if i in input_text]
         if len(code_matches) >= 2:
             return (TaskType.CODE_ANALYSIS,
-                    f"Detected {len(code_matches)} code syntax indicators — classifying as code analysis",
+                    f"Detected {len(code_matches)} code syntax indicators - classifying as code analysis",
                     code_matches, min(0.6 + len(code_matches) * 0.08, 0.98))
 
         summarize_indicators = ['summarize', 'summary', 'brief', 'overview', 'key points', 'main idea', 'tldr']
@@ -1163,7 +1163,7 @@ class TaskOrchestrator:
                     doc_matches, 0.80)
 
         return (TaskType.GENERAL_ANALYSIS,
-                "No domain-specific indicators detected — defaulting to general analysis",
+                "No domain-specific indicators detected - defaulting to general analysis",
                 [], 0.50)
 
     async def _get_settings(self) -> SystemSettings:
@@ -1198,7 +1198,7 @@ class TaskOrchestrator:
 
             task = await self._update_step(task, 0, "completed", f"Input validated: {input_size} units")
 
-            # Step 2: Preprocessing — Task Type Detection
+            # Step 2: Preprocessing - Task Type Detection
             task.status = TaskStatus.PREPROCESSING
             task = await self._update_step(task, 1, "running", "Preprocessing input data")
 
@@ -1216,7 +1216,7 @@ class TaskOrchestrator:
                             confidence=detection_confidence)
             else:
                 self._trace(task, "preprocessing", "task_type_detection",
-                            f"Task type explicitly set to '{original_type}' — skipping auto-detection.",
+                            f"Task type explicitly set to '{original_type}' - skipping auto-detection.",
                             inputs={"original_type": original_type},
                             outputs={"detected_type": original_type},
                             confidence=1.0)
@@ -1295,7 +1295,7 @@ class TaskOrchestrator:
                             outputs={"retrieved_count": 0})
                 task = await self._update_step(task, 2, "completed", "Memory disabled in settings")
 
-            # Step 4: AI Analysis — Model Selection & Execution
+            # Step 4: AI Analysis - Model Selection & Execution
             active_model = override_model or settings.default_model
             active_provider = override_provider or settings.default_provider
             litellm_model = resolve_litellm_model(active_provider, active_model)
@@ -1393,7 +1393,7 @@ class TaskOrchestrator:
                             outputs={"items_created": 2, "summary_id": summary_item.id, "context_id": context_item.id})
             else:
                 self._trace(task, "output_generation", "memory_storage",
-                            "Memory storage skipped — disabled in settings.",
+                            "Memory storage skipped - disabled in settings.",
                             inputs={"enable_memory": False},
                             outputs={"items_created": 0})
 

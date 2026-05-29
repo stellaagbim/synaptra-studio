@@ -70,7 +70,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
   }
 
   const formatTimestamp = (timestamp) => {
-    if (!timestamp) return "—";
+    if (!timestamp) return "-";
     const date = new Date(timestamp);
     return date.toLocaleString('en-US', {
       month: 'short',
@@ -81,7 +81,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
   };
 
   const formatDuration = (ms) => {
-    if (!ms) return "—";
+    if (!ms) return "-";
     if (ms < 1000) return `${ms}ms`;
     return `${(ms / 1000).toFixed(2)}s`;
   };
@@ -154,7 +154,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
                             </span>
                           </>
                         ) : (
-                          <span className="text-mono text-[12px] text-[#4b5563]">—</span>
+                          <span className="text-mono text-[12px] text-[#4b5563]">-</span>
                         )}
                       </div>
                     </div>
@@ -191,7 +191,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
                 }}
                 data-testid="overall-score"
               >
-                {hasMetrics ? task?.evaluation?.overall_score?.toFixed(1) : '—'}
+                {hasMetrics ? task?.evaluation?.overall_score?.toFixed(1) : '-'}
               </div>
             </div>
           </div>
@@ -230,7 +230,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
                   <span className="text-[11px] text-[#6b7280]">Task ID</span>
                 </div>
                 <span className="text-mono text-[10px] text-[#9ca3af]" data-testid="task-id">
-                  {task?.id ? task.id.slice(0, 12).toUpperCase() : '—'}
+                  {task?.id ? task.id.slice(0, 12).toUpperCase() : '-'}
                 </span>
               </div>
 
@@ -264,7 +264,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
                     <span className="text-[11px] text-[#6b7280]">Model</span>
                   </div>
                   <span className="text-mono text-[10px] text-[#9ca3af]" data-testid="model-used">
-                    {task?.metadata?.model_used || '—'}
+                    {task?.metadata?.model_used || '-'}
                   </span>
                 </div>
 
@@ -274,7 +274,7 @@ export const MetricsPanel = ({ task, collapsed, onToggleCollapse }) => {
                     <span className="text-[11px] text-[#6b7280]">Modality</span>
                   </div>
                   <span className="text-[10px] text-[#9ca3af] capitalize" data-testid="input-modality">
-                    {task?.metadata?.input_modality || '—'}
+                    {task?.metadata?.input_modality || '-'}
                   </span>
                 </div>
               </div>

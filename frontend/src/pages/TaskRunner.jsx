@@ -545,7 +545,7 @@ export const TaskRunner = () => {
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-[var(--sy-text-tertiary)]">{m.label}</span>
                         <span className={`sy-data text-sm sy-text-${color}`}>
-                          {value?.toFixed(1) || '—'}
+                          {value?.toFixed(1) || '-'}
                         </span>
                       </div>
                       <div className="sy-metric-bar">
@@ -563,7 +563,7 @@ export const TaskRunner = () => {
               <div className="mt-6 pt-4 border-t border-[var(--sy-border-void)]">
                 <div className="sy-eval-score highlight">
                   <div className={`sy-eval-score-value ${hasMetrics ? `sy-text-${getScoreColor(activeTask.evaluation.overall_score)}` : 'text-[var(--sy-text-muted)]'}`}>
-                    {hasMetrics ? activeTask.evaluation.overall_score.toFixed(1) : '—'}
+                    {hasMetrics ? activeTask.evaluation.overall_score.toFixed(1) : '-'}
                   </div>
                   <div className="sy-eval-score-label">Overall Score</div>
                   {hasMetrics && (
@@ -587,7 +587,7 @@ export const TaskRunner = () => {
                   <span className="sy-data text-sm text-[var(--sy-text-primary)]">
                     {activeTask?.metadata?.processing_time_ms
                       ? `${(activeTask.metadata.processing_time_ms / 1000).toFixed(2)}s`
-                      : '—'}
+                      : '-'}
                   </span>
                 </div>
               </div>
@@ -600,7 +600,7 @@ export const TaskRunner = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--sy-text-muted)]">Task ID</span>
                   <span className="sy-data text-[var(--sy-text-tertiary)]">
-                    {activeTask?.id?.slice(0, 12).toUpperCase() || '—'}
+                    {activeTask?.id?.slice(0, 12).toUpperCase() || '-'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -610,31 +610,31 @@ export const TaskRunner = () => {
                       ? new Date(activeTask.created_at).toLocaleString('en-US', {
                           month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
                         })
-                      : '—'}
+                      : '-'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--sy-text-muted)]">Provider</span>
                   <span className="sy-data text-[var(--sy-text-tertiary)] capitalize">
-                    {activeTask?.metadata?.provider || '—'}
+                    {activeTask?.metadata?.provider || '-'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--sy-text-muted)]">Model</span>
                   <span className="sy-data text-[var(--sy-text-tertiary)]">
-                    {activeTask?.metadata?.model_used || '—'}
+                    {activeTask?.metadata?.model_used || '-'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--sy-text-muted)]">Modality</span>
                   <span className="sy-data text-[var(--sy-text-tertiary)] capitalize">
-                    {activeTask?.metadata?.input_modality || '—'}
+                    {activeTask?.metadata?.input_modality || '-'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--sy-text-muted)]">Traces</span>
                   <span className="sy-data text-[var(--sy-text-tertiary)]">
-                    {traces.length || '—'}
+                    {traces.length || '-'}
                   </span>
                 </div>
               </div>

@@ -44,7 +44,7 @@ const MetricDisplay = ({ label, value, description, icon: Icon }) => {
       </div>
       <div className="flex items-end justify-between">
         <div className={`sy-metric-value sy-text-${color}`}>
-          {value?.toFixed(1) || '—'}
+          {value?.toFixed(1) || '-'}
         </div>
       </div>
       <div className="sy-metric-bar mt-3">
@@ -405,7 +405,7 @@ export const Eval = () => {
                 <div className="sy-metric-card">
                   <div className="sy-metric-label">Overall Score</div>
                   <div className={`sy-metric-value sy-text-${getScoreColor(selectedRun.aggregate_scores?.overall_score)}`}>
-                    {selectedRun.aggregate_scores?.overall_score?.toFixed(1) || '—'}
+                    {selectedRun.aggregate_scores?.overall_score?.toFixed(1) || '-'}
                   </div>
                 </div>
                 <div className="sy-metric-card">
@@ -461,7 +461,7 @@ export const Eval = () => {
                 <div className="mt-6">
                   <div className="sy-eval-score highlight">
                     <div className={`sy-eval-score-value sy-text-${getScoreColor(selectedRun.aggregate_scores?.overall_score)}`}>
-                      {selectedRun.aggregate_scores?.overall_score?.toFixed(1) || '—'}
+                      {selectedRun.aggregate_scores?.overall_score?.toFixed(1) || '-'}
                     </div>
                     <div className="sy-eval-score-label">Weighted Fidelity Score</div>
                     <div className="sy-eval-confidence">
@@ -586,7 +586,7 @@ export const Eval = () => {
                   <div className="sy-metric-value text-[var(--sy-text-primary)] text-base">
                     {selectedSuite.last_run_at
                       ? new Date(selectedSuite.last_run_at).toLocaleDateString()
-                      : '—'}
+                      : '-'}
                   </div>
                 </div>
               </div>
@@ -673,7 +673,7 @@ export const Eval = () => {
                     <div className="flex items-start justify-between gap-3 mb-1">
                       <span className="text-sm text-[var(--sy-text-secondary)] leading-snug">{run.suite_name}</span>
                       <span className={`sy-data text-sm sy-text-${getScoreColor(score)} flex-shrink-0`}>
-                        {score?.toFixed(1) || '—'}
+                        {score?.toFixed(1) || '-'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
